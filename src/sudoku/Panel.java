@@ -10,7 +10,11 @@ import java.util.Random;
 public class Panel extends JPanel {
     private final int visina = 183*3;
     private final int duzina = 183*3;
-
+    private int index1;
+    private int index2;
+    
+    private Random rand = new Random();
+    
     public Panel() {
         setPreferredSize(new Dimension(duzina, visina));
     setLayout(null);
@@ -29,10 +33,7 @@ public class Panel extends JPanel {
             Sudoku[i][j].setVisible(true);
             add(Sudoku[i][j]);
         }
-
-    Random rand = new Random();
-    int broj1, broj2, broj3, index1, index2, index3;
-    
+    int broj1, broj2, broj3;
     broj1 = rand.nextInt(10);
     broj2 = rand.nextInt(10) + broj1;
     broj3 = rand.nextInt(10) + broj2;
@@ -43,16 +44,9 @@ public class Panel extends JPanel {
             Sudoku[i][j].setText(""+((broj1 + 3*(i%3)+(j+(i/3)+broj3)%3+(j/3+broj2)*3)%9+1));
     //ovde raditi iteracije i razmjenjivati redove ili kolone
     mjesanje(Sudoku);
-    printanje(Sudoku);
-    /*
-    int brisanje = 0;
-    do
-    {
-        index1 = rand.nextInt(9);
-        index2 = rand.nextInt(9);
-        Sudoku[index1][index2].setText("");
-        brisanje--;
-    }while(brisanje>0);*/
+    brisanje(Sudoku, 17);
+    
+    
 }
 
     @Override
@@ -71,7 +65,6 @@ public class Panel extends JPanel {
     private void mjesanje(JButton[][] dugme){
         Random rand = new Random();
         int broj1 = rand.nextInt(150);
-        int index1, index2;
         for(int i=0; i<broj1; i++)
         {
             String razmjena = new String();
@@ -100,18 +93,44 @@ public class Panel extends JPanel {
             // ovde bi bilo pozeljno da se mjenjaju blokovi malo
         }
     }
-    void printanje(JButton[][] dugme){
-        for(int i = 0; i<dugme.length; i++)
+    private void brisanje(JButton[][] dugme, int brisanje){
+        int[][] izbrisani = new int[brisanje][2];
+        int zastava, i=0;
+        do
         {
-            if(i%3==0)
-            System.out.println();
-            for(int j=0; j<dugme[i].length; j++)
-            {
-                if(j%3==0)
-                    System.out.print("\t");
-                    System.out.print(dugme[i][j]);
-            }
-            System.out.println();
-        }
+                zastava =2;
+                index1 = rand.nextInt(9);
+                index2 = rand.nextInt(9);
+                izbrisani[i][0]=index1;
+                izbrisani[i][1]=index2;
+                if(i>=1)
+                {
+                    for(int k=0; k<=i;k++){
+                    if(izbrisani[k][0]!=izbrisani[i][0] && izbrisani[k][1]!=izbrisani[i][1])
+                    {
+                        zastava = 1;
+                        break;
+                    }
+                    else
+                        zastava = 0;
+                }
+                }
+                else
+                   zastava =1;
+                if(zastava == 1){
+                    if(dugme[index1][index2].getText()!= "")
+                    {
+                        dugme[index1][index2].setText("");
+                        brisanje--;
+                        i++;
+                    }
+                }
+                else if(zastava == 2)
+                    System.out.println("Ispalo je sranje");
+                else
+                    System.out.println("nesto trece");
+                
+        }while(brisanje>0);
+        
     }
 }
