@@ -1,50 +1,76 @@
 package sudoku;
-
+import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import static java.lang.Math.sqrt;
 import java.util.Random;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
-public class Dugme extends JButton{
+public class Dugme extends JButton implements MouseListener{
     private int index1;
     private int index2;
     private Random rand = new Random();
-    private JButton[][] Sudoku = new JButton[9][9];
+    private static int velicina = 9;
+    private static int korijen = (int) sqrt(velicina);
+    private JButton[][] Sudoku = new JButton[velicina][velicina];
+    private final Font font = new Font("Arial", Font.PLAIN, 15);
+    private static JLabel labela = new JLabel();
+    
+    public static int getVelicina() {
+        return velicina;
+    }
+
+    public static int getKorijen() {
+        return korijen;
+    }
     
     public Dugme() {
+        
         int duzina = Prozor.getDuzina();
         int visina = Prozor.getVisina();
-        setPreferredSize(new Dimension(visina, duzina));
+        setPreferredSize(new Dimension(duzina, visina));
         setLayout(null);
         setBackground(Color.white);
         for ( int i = 0; i < Sudoku[0].length; i++ )
             for ( int j = 0; j < Sudoku[0].length; j++ )
             {
-                Sudoku[i][j] = new JButton("");
+                Sudoku[i][j] = new JButton(" ");
             }
-        for(int i=0; i<9; i++)
-        for(int j=0;j<9; j++)
-        {
-            Sudoku[i][j].setBounds(Prozor.getDuzina()/9*j+3, Prozor.getVisina()/9*i+3, Prozor.getDuzina()/9-6, Prozor.getVisina()/9-6);
-            Sudoku[i][j].setVisible(true);
-            add(Sudoku[i][j]);
-        }
+        for(int i=0; i<velicina; i++)
+            for(int j=0;j<velicina; j++)
+            {   
+                Sudoku[i][j].setFont(font);
+                Sudoku[i][j].setBounds((Prozor.getDuzina())/velicina*j+3, (Prozor.getVisina()-Prozor.getMeniSize())/velicina*i +3, Prozor.getDuzina()/velicina-3, (Prozor.getVisina()-Prozor.getMeniSize())/velicina-3);
+                Sudoku[i][j].setVisible(true);
+                Sudoku[i][j].setEnabled(false);
+                Sudoku[i][j].addMouseListener(this);
+                addMouseListener(this);
+                add(Sudoku[i][j]);
+                labela.setText("JEBEEN");
+            }
         int broj1, broj2, broj3;
-        broj1 = rand.nextInt(10);
-        broj2 = rand.nextInt(10) + broj1;
-        broj3 = rand.nextInt(10) + broj2;
+        broj1 = rand.nextInt(velicina+1);
+        broj2 = rand.nextInt(velicina+1) + broj1;
+        broj3 = rand.nextInt(velicina+1) + broj2;
 
-        for(int i=0; i<9; i++)
-            for(int j=0; j<9; j++)
-
-                Sudoku[i][j].setText(""+((broj1 + 3*(i%3)+(j+(i/3)+broj3)%3+(j/3+broj2)*3)%9+1));
+        for(int i=0; i<velicina; i++)
+            for(int j=0; j<velicina; j++)
+                Sudoku[i][j].setText(""+((broj1 + korijen*(i%korijen)+(j+(i/korijen)+broj3)%korijen+(j/korijen+broj2)*korijen)%velicina+1));
         //ovde raditi iteracije i razmjenjivati redove ili kolone
         mjesanje(Sudoku);
-        brisanje(Sudoku, 17);
+        brisanje(Sudoku, 2);
+        ispis(Sudoku);
+        kraj(Sudoku);
     }
     //mjesanje je moguce jos malo doraditi
- private void mjesanje(JButton[][] dugme){
+    private void mjesanje(JButton[][] dugme){
     int broj1 = rand.nextInt(150);
     for(int i=0; i<broj1; i++)
     {
@@ -53,7 +79,7 @@ public class Dugme extends JButton{
         {
             index1 = rand.nextInt(3);
             index2 = rand.nextInt(3);
-            for(int kolone=0; kolone <9; kolone++)
+            for(int kolone=0; kolone <velicina; kolone++)
             {
                 razmjena = dugme[index1+3*blokovi][kolone].getText();
                 dugme[index1+3*blokovi][kolone].setText(dugme[index2+3*blokovi][kolone].getText());
@@ -64,7 +90,7 @@ public class Dugme extends JButton{
         {
             index1 = rand.nextInt(3);
             index2 = rand.nextInt(3);
-            for(int redovi=0; redovi <9; redovi++)
+            for(int redovi=0; redovi <velicina; redovi++)
             {
                 razmjena = dugme[redovi][index1+3*blokovi].getText();
                 dugme[redovi][index1+3*blokovi].setText(dugme[redovi][index2+3*blokovi].getText());
@@ -74,56 +100,214 @@ public class Dugme extends JButton{
         // ovde bi bilo pozeljno da se mjenjaju blokovi malo
     }
 }
-private void brisanje(JButton[][] dugme, int brisanje){
+    private void brisanje(JButton[][] dugme, int brisanje){
     int[][] izbrisani = new int[brisanje][2];
     int zastava, i=0;
-    do
-    {
-            zastava =2;
-            index1 = rand.nextInt(9);
-            index2 = rand.nextInt(9);
-            izbrisani[i][0]=index1;
-            izbrisani[i][1]=index2;
-            if(i>=1)
+    for(;brisanje >0;){
+        zastava =2;
+        index1 = rand.nextInt(9);
+        index2 = rand.nextInt(9);
+        izbrisani[i][0]=index1;
+        izbrisani[i][1]=index2;
+        if(i>=1)
+        {
+            for(int k=0; k<=i;k++){
+            if(izbrisani[k][0]!=izbrisani[i][0] && izbrisani[k][1]!=izbrisani[i][1])
             {
-                for(int k=0; k<=i;k++){
-                if(izbrisani[k][0]!=izbrisani[i][0] && izbrisani[k][1]!=izbrisani[i][1])
-                {
-                    zastava = 1;
-                    break;
-                }
-                else
-                    zastava = 0;
-            }
+                zastava = 1;
+                break;
             }
             else
-               zastava =1;
-            if(zastava == 1){
-                if(!"".equals(dugme[index1][index2].getText()))
-                {
-                    dugme[index1][index2].setText("");
-                    brisanje--;
-                    i++;
-                }
+                zastava = 0;
+        }
+        }
+        else
+           zastava =1;
+        if(zastava == 1){
+            if(!"".equals(dugme[index1][index2].getText()))
+            {
+                dugme[index1][index2].setEnabled(true);
+                dugme[index1][index2].setText(" ");
+                brisanje--;
+                i++;
             }
-            else if(zastava == 2)
-                System.out.println("Ispalo je sranje");
-            else
-                System.out.println("nesto trece");
-
-    }while(brisanje>0);
-
+        }
+        else if(zastava == 2)
+            System.out.println("Ispalo je sranje");
+        else
+            System.out.println("nesto trece");
+    }
 }    
-
+    private int ispitivanje(JButton[][] dugme, int redovi, int kolona, char t){
+String[] kolone = new String[9];
+String[] red = new String[9];
+String[] kocka = new String[9];
+String te = "" + t;
+int redP=2, redK=2, redKoc=0, prolaz=0;
+System.out.println(kolona + " " + redovi);
+for(int i=0; i<9; i++)
+{
+    kolone[i] = dugme[i][kolona].getText();
+    red[i] = dugme[redovi][i].getText();
+}
+for(int i=0; i<3; i++)
+    for(int j=0; j<3; j++)
+        kocka[prolaz++] = dugme[i+ 3*((int) redovi/3)][j+3*((int)kolona/3)].getText();
+for(int i=0; i<9; i++)
+    if(red[i].equals(te))
+    {
+        redP = 1;
+        break;
+    }
+    else
+        redP=0;
+    for(int i=0; i<9; i++)
+    if(kolone[i].equals(te))
+    {
+        redK = 1;
+        break;
+    }
+    else
+        redK=0;
+    for(int i = 0; i<9; i++)
+        if(kocka[i] == "")
+            System.out.print("0 ");
+        else
+            System.out.print(kocka[i]+ " ");
+for(int i=0; i<9; i++)
+    if(kocka[i].equals(te))
+        {
+        redKoc = 1;
+        break;
+        }
+    else
+        redKoc=0;
+    
+    if(redP== 0)
+        System.out.println("Uredu je po redovima ");
+    else
+        System.out.println("Nije uredu po redovima");
+    if(redK == 0)
+        System.out.println("Uredu je po kolonama ");
+    else
+        System.out.println("Nije Uredu je po kolonama ");
+    if(redKoc==0)
+        System.out.print("Uredu je po kockama ");
+    else
+        System.out.println("NIJE Uredu je po kockama ");
+    if(redP == 0 && redK == 0 && redKoc == 0)
+        return 1;
+    return 0;
+}
+    private void kraj(JButton[][] dugme){
+    
+    int p=2;
+    for(int i=0; i<9; i++)
+        for(int j=0; j<9; j++)
+            if(dugme[i][j].getText() == " ")
+            {
+                p=1;
+                break;
+            }
+            else
+            {
+                p=0;
+            }
+    if(p==0)
+    {
+        Dugme.labela.setText("Kraj Igre");
+    }
+    else if (p==1)
+        Dugme.labela.setText("NIJE JOS LRAJ IGRE!");
+    else
+        Dugme.labela.setText("Odredjena greska");
+}
+    //ne toliko vazna funkcija
+    private void ispis(JButton[][] dugme){
+    for(int i=0; i<9; i++)
+    {
+        for(int j=0; j<9; j++)
+            if(dugme[i][j].getText() == " ")
+              System.out.print("? ");
+            else
+                System.out.print(dugme[i][j].getText() + " ");
+        System.out.println();
+    }
+}
 @Override
 public void paint(Graphics g) {
     super.paint(g);
-    for(int i=0; i<3; i++)
+    for(int i=0; i<korijen; i++)
         {
-            g.drawRect(i*Prozor.getDuzina()/3, 0, Prozor.getDuzina()/3, Prozor.getVisina()/3);
-            g.drawRect(i*Prozor.getDuzina()/3, Prozor.getDuzina()/3, Prozor.getDuzina()/3, Prozor.getVisina()/3);
-            g.drawRect(i*Prozor.getDuzina()/3, 2*Prozor.getDuzina()/3, Prozor.getDuzina()/3, Prozor.getVisina()/3);
-         }
+            for(int j=0; j<korijen; j++)
+            g.drawRect(i*Prozor.getDuzina()/(korijen) + 2, j*(Prozor.getVisina()-Prozor.getMeniSize())/korijen+ 2, Prozor.getDuzina()/korijen - 2, (Prozor.getVisina()-Prozor.getMeniSize())/korijen - 2);
+        }
     //ovde je potrebno ponovo osmisliti kako iscrtati sve ovo sa dugmadima
 }
+
+//vjerovatno dobro, ali treba jos ispitivanja
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println(this.getMousePosition().toString());
+        for(int i=0; i<9; i++)
+            for(int j=0; j<9; j++)
+                if(this.getMousePosition().x >= Sudoku[i][j].getX() && this.getMousePosition().x <=Sudoku[i][j].getWidth()*(j+1)
+                    && this.getMousePosition().y >= Sudoku[i][j].getY() + Prozor.getMeniSize() && this.getMousePosition().y <=Sudoku[i][j].getHeight()*(i+1) + Prozor.getMeniSize())
+                        if(Sudoku[i][j].isEnabled() == false)
+                        {
+                            System.out.println("nije moguce");
+                            break;
+                        }
+                        else
+                        {
+                            System.out.println("MOGUCE");
+                            final JTextField text = new JTextField();
+                            text.setBounds(Sudoku[i][j].getBounds());
+                            Sudoku[i][j].setVisible(false);
+                            Sudoku[i][j].setText("");
+                            text.setVisible(true);
+                            text.setEnabled(true);
+                            text.setFont(font);
+                            add(text);
+                            final int prvi = i;
+                            final int drugi = j;
+                            text.setHorizontalAlignment(CENTER);
+                            KeyListener t = new KeyListener() {               
+                @Override
+                public void keyTyped(KeyEvent e) {
+                    if(e.getKeyChar() <= '9' && e.getKeyChar() >='1')
+                    {
+                        System.out.println(e.getKeyChar());
+                        if(ispitivanje(Sudoku, prvi, drugi, e.getKeyChar()) == 1)
+                        {
+                            Sudoku[prvi][drugi].setText("" + e.getKeyChar());
+                            text.setVisible(false);
+                            Sudoku[prvi][drugi].setVisible(true);
+                            ispis(Sudoku);
+                            kraj(Sudoku);
+                        }
+                        text.setText("");
+                    }
+                    else
+                    {
+                        e.consume();
+                        text.setText("");
+                    }
+                }
+                
+                @Override
+                public void keyPressed(KeyEvent e) {}
+                @Override
+                public void keyReleased(KeyEvent e) {}
+            };
+                            text.addKeyListener( t);
+                            addKeyListener(t);
+                            break;
+                        }
+    }
+    
+    @Override public void mouseExited(MouseEvent e){}
+    @Override public void mousePressed(MouseEvent e) {}
+    @Override public void mouseReleased(MouseEvent e) {}
+    @Override public void mouseEntered(MouseEvent e) {}
 }
