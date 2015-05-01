@@ -11,7 +11,10 @@ import java.awt.event.MouseListener;
 import static java.lang.Math.sqrt;
 import java.util.Random;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 
 public class Dugme extends JButton implements MouseListener{
     private int index1;
@@ -32,7 +35,8 @@ public class Dugme extends JButton implements MouseListener{
     }
     
     public Dugme() {
-        
+    //<editor-fold defaultstate="collapsed" desc=" Generisanje Dugmadi ">
+    
         int duzina = Prozor.getDuzina();
         int visina = Prozor.getVisina();
         setPreferredSize(new Dimension(duzina, visina));
@@ -53,7 +57,6 @@ public class Dugme extends JButton implements MouseListener{
                 Sudoku[i][j].addMouseListener(this);
                 addMouseListener(this);
                 add(Sudoku[i][j]);
-                labela.setText("JEBEEN");
             }
         int broj1, broj2, broj3;
         broj1 = rand.nextInt(velicina+1);
@@ -63,7 +66,8 @@ public class Dugme extends JButton implements MouseListener{
         for(int i=0; i<velicina; i++)
             for(int j=0; j<velicina; j++)
                 Sudoku[i][j].setText(""+((broj1 + korijen*(i%korijen)+(j+(i/korijen)+broj3)%korijen+(j/korijen+broj2)*korijen)%velicina+1));
-        //ovde raditi iteracije i razmjenjivati redove ili kolone
+    //</editor-fold>        
+    //ovde raditi iteracije i razmjenjivati redove ili kolone
         mjesanje(Sudoku);
         brisanje(Sudoku, 2);
         ispis(Sudoku);
@@ -71,7 +75,8 @@ public class Dugme extends JButton implements MouseListener{
     }
     //mjesanje je moguce jos malo doraditi
     private void mjesanje(JButton[][] dugme){
-    int broj1 = rand.nextInt(150);
+    //<editor-fold defaultstate="collapsed" desc=" Algoritam mjesanja ovoga ">
+        int broj1 = rand.nextInt(150);
     for(int i=0; i<broj1; i++)
     {
         String razmjena = new String();
@@ -99,8 +104,9 @@ public class Dugme extends JButton implements MouseListener{
         }
         // ovde bi bilo pozeljno da se mjenjaju blokovi malo
     }
-}
+}//</editor-fold>
     private void brisanje(JButton[][] dugme, int brisanje){
+    //<editor-fold defaultstate="collapsed" desc=" brisanje clanova ">
     int[][] izbrisani = new int[brisanje][2];
     int zastava, i=0;
     for(;brisanje >0;){
@@ -137,8 +143,9 @@ public class Dugme extends JButton implements MouseListener{
         else
             System.out.println("nesto trece");
     }
-}    
+}//</editor-fold>    
     private int ispitivanje(JButton[][] dugme, int redovi, int kolona, char t){
+    //<editor-fold defaultstate="collapsed" desc=" Ispitivanje da li je moguce unijeti broj ">
 String[] kolone = new String[9];
 String[] red = new String[9];
 String[] kocka = new String[9];
@@ -187,20 +194,23 @@ for(int i=0; i<9; i++)
         System.out.println("Uredu je po redovima ");
     else
         System.out.println("Nije uredu po redovima");
+    
     if(redK == 0)
         System.out.println("Uredu je po kolonama ");
     else
         System.out.println("Nije Uredu je po kolonama ");
+    
     if(redKoc==0)
         System.out.print("Uredu je po kockama ");
     else
         System.out.println("NIJE Uredu je po kockama ");
+    
     if(redP == 0 && redK == 0 && redKoc == 0)
         return 1;
     return 0;
-}
+}//</editor-fold>
     private void kraj(JButton[][] dugme){
-    
+    //<editor-fold defaultstate="collapsed" desc=" Ispituje da li su sva polja popunjena ">
     int p=2;
     for(int i=0; i<9; i++)
         for(int j=0; j<9; j++)
@@ -216,13 +226,20 @@ for(int i=0; i<9; i++)
     if(p==0)
     {
         Dugme.labela.setText("Kraj Igre");
+        JFrame nesto = new JFrame();
+        Dialog dialog;
+        dialog = new Dialog(nesto, true);
+        dialog.setVisible(true);
+        Menu.setNovaIgra(true);
+        
     }
     else if (p==1)
         Dugme.labela.setText("NIJE JOS LRAJ IGRE!");
     else
         Dugme.labela.setText("Odredjena greska");
-}
-    //ne toliko vazna funkcija
+}////</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Finkcija koja u konzolu ispisuje Sudoku">
     private void ispis(JButton[][] dugme){
     for(int i=0; i<9; i++)
     {
@@ -234,6 +251,7 @@ for(int i=0; i<9; i++)
         System.out.println();
     }
 }
+    //</editor-fold>
 @Override
 public void paint(Graphics g) {
     super.paint(g);
@@ -245,9 +263,11 @@ public void paint(Graphics g) {
     //ovde je potrebno ponovo osmisliti kako iscrtati sve ovo sa dugmadima
 }
 
+//<editor-fold defaultstate="collapsed" desc="Event Handling">
 //vjerovatno dobro, ali treba jos ispitivanja
     @Override
     public void mouseClicked(MouseEvent e) {
+        
         System.out.println(this.getMousePosition().toString());
         for(int i=0; i<9; i++)
             for(int j=0; j<9; j++)
@@ -310,4 +330,5 @@ public void paint(Graphics g) {
     @Override public void mousePressed(MouseEvent e) {}
     @Override public void mouseReleased(MouseEvent e) {}
     @Override public void mouseEntered(MouseEvent e) {}
+    //</editor-fold>
 }
