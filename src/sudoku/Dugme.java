@@ -13,10 +13,9 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 
-public class Dugme extends JButton implements MouseListener{
+public class Dugme extends JPanel implements MouseListener{
     private int index1;
     private int index2;
     private Random rand = new Random();
@@ -25,7 +24,7 @@ public class Dugme extends JButton implements MouseListener{
     private JButton[][] Sudoku = new JButton[velicina][velicina];
     private final Font font = new Font("Arial", Font.PLAIN, 15);
     private static JLabel labela = new JLabel();
-    
+    public long vreme = System.currentTimeMillis();
     public static int getVelicina() {
         return velicina;
     }
@@ -51,7 +50,7 @@ public class Dugme extends JButton implements MouseListener{
             for(int j=0;j<velicina; j++)
             {   
                 Sudoku[i][j].setFont(font);
-                Sudoku[i][j].setBounds((Prozor.getDuzina())/velicina*j+3, (Prozor.getVisina()-Prozor.getMeniSize())/velicina*i +3, Prozor.getDuzina()/velicina-3, (Prozor.getVisina()-Prozor.getMeniSize())/velicina-3);
+                Sudoku[i][j].setBounds((Prozor.getDuzina())/velicina*j+3, (Prozor.getVisina())/velicina*i +3, Prozor.getDuzina()/velicina-3, (Prozor.getVisina())/velicina-3);
                 Sudoku[i][j].setVisible(true);
                 Sudoku[i][j].setEnabled(false);
                 Sudoku[i][j].addMouseListener(this);
@@ -69,7 +68,7 @@ public class Dugme extends JButton implements MouseListener{
     //</editor-fold>        
     //ovde raditi iteracije i razmjenjivati redove ili kolone
         mjesanje(Sudoku);
-        brisanje(Sudoku, 2);
+        brisanje(Sudoku, 17);
         ispis(Sudoku);
         kraj(Sudoku);
     }
@@ -230,6 +229,7 @@ for(int i=0; i<9; i++)
         Dialog dialog;
         dialog = new Dialog(nesto, true);
         dialog.setVisible(true);
+        dialog.setjLabel1("Vase vrijeme je: pristiglo");
         Menu.setNovaIgra(true);
         
     }
@@ -258,7 +258,7 @@ public void paint(Graphics g) {
     for(int i=0; i<korijen; i++)
         {
             for(int j=0; j<korijen; j++)
-            g.drawRect(i*Prozor.getDuzina()/(korijen) + 2, j*(Prozor.getVisina()-Prozor.getMeniSize())/korijen+ 2, Prozor.getDuzina()/korijen - 2, (Prozor.getVisina()-Prozor.getMeniSize())/korijen - 2);
+            g.drawRect(i*Prozor.getDuzina()/(korijen) + 2, j*(Prozor.getVisina())/korijen+ 2, Prozor.getDuzina()/korijen - 2, (Prozor.getVisina())/korijen - 2);
         }
     //ovde je potrebno ponovo osmisliti kako iscrtati sve ovo sa dugmadima
 }
@@ -291,7 +291,7 @@ public void paint(Graphics g) {
                             add(text);
                             final int prvi = i;
                             final int drugi = j;
-                            text.setHorizontalAlignment(CENTER);
+                            text.setHorizontalAlignment(JTextField.CENTER);
                             KeyListener t = new KeyListener() {               
                 @Override
                 public void keyTyped(KeyEvent e) {
