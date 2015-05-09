@@ -35,9 +35,8 @@ public class Menu {
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                   Dialog dial = new Dialog(new javax.swing.JFrame(), true);
-                    dial.setVisible(true);
-                    dial.setResizable(false);
+                   HighScore nova = new HighScore();
+                   nova.setVisible(true);
                 }
 
                 @Override public void mousePressed(MouseEvent e) {}

@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import static java.lang.Math.sqrt;
+import java.util.Calendar;
 import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,6 +26,11 @@ public class Dugme extends JPanel implements MouseListener{
     private final Font font = new Font("Arial", Font.PLAIN, 15);
     private static JLabel labela = new JLabel();
     public long vreme = System.currentTimeMillis();
+
+    public static JLabel getLabela() {
+        return labela;
+    }
+    
     public static int getVelicina() {
         return velicina;
     }
@@ -53,6 +59,7 @@ public class Dugme extends JPanel implements MouseListener{
                 Sudoku[i][j].setBounds((Prozor.getDuzina())/velicina*j+3, (Prozor.getVisina())/velicina*i +3, Prozor.getDuzina()/velicina-3, (Prozor.getVisina())/velicina-3);
                 Sudoku[i][j].setVisible(true);
                 Sudoku[i][j].setEnabled(false);
+                Sudoku[i][j].setFocusable(false);
                 Sudoku[i][j].addMouseListener(this);
                 addMouseListener(this);
                 add(Sudoku[i][j]);
@@ -68,7 +75,7 @@ public class Dugme extends JPanel implements MouseListener{
     //</editor-fold>        
     //ovde raditi iteracije i razmjenjivati redove ili kolone
         mjesanje(Sudoku);
-        brisanje(Sudoku, 17);
+        brisanje(Sudoku, 1/*velicina*velicina - 25*/);
         ispis(Sudoku);
         kraj(Sudoku);
     }
@@ -226,15 +233,20 @@ for(int i=0; i<9; i++)
     {
         Dugme.labela.setText("Kraj Igre");
         JFrame nesto = new JFrame();
-        Dialog dialog;
-        dialog = new Dialog(nesto, true);
-        dialog.setVisible(true);
-        dialog.setjLabel1("Vase vrijeme je: pristiglo");
+        
+        Calendar krajnje = Calendar.getInstance();
+        krajnje.add(Calendar.HOUR_OF_DAY, -(Menu.vrijeme.get(Calendar.HOUR_OF_DAY)));
+        krajnje.add(Calendar.MINUTE, -(Menu.vrijeme.get(Calendar.MINUTE)));
+        krajnje.add(Calendar.SECOND, -(Menu.vrijeme.get(Calendar.SECOND)));
+        
+        HighScore novi = new HighScore();
+        novi.setVisible(true);
+        novi.setScore("IME", krajnje);
         Menu.setNovaIgra(true);
         
     }
     else if (p==1)
-        Dugme.labela.setText("NIJE JOS LRAJ IGRE!");
+        Dugme.labela.setText("Igra traje!");
     else
         Dugme.labela.setText("Odredjena greska");
 }////</editor-fold>
@@ -272,7 +284,7 @@ public void paint(Graphics g) {
         for(int i=0; i<9; i++)
             for(int j=0; j<9; j++)
                 if(this.getMousePosition().x >= Sudoku[i][j].getX() && this.getMousePosition().x <=Sudoku[i][j].getWidth()*(j+1)
-                    && this.getMousePosition().y >= Sudoku[i][j].getY() + Prozor.getMeniSize() && this.getMousePosition().y <=Sudoku[i][j].getHeight()*(i+1) + Prozor.getMeniSize())
+                    && this.getMousePosition().y >= Sudoku[i][j].getY() && this.getMousePosition().y <=Sudoku[i][j].getHeight()*(i+1))
                         if(Sudoku[i][j].isEnabled() == false)
                         {
                             System.out.println("nije moguce");

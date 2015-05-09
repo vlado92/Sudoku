@@ -36,7 +36,11 @@ public class Sudoku implements Runnable {
         final JLabel timeLabel = new JLabel();
         timeLabel.setHorizontalAlignment(JLabel.CENTER);
         statusBar.addRightComponent(timeLabel);
-
+        
+        JLabel statLabel = new JLabel();
+        statLabel = Dugme.getLabela();
+        statLabel.setHorizontalAlignment(JLabel.CENTER);
+        statusBar.setLeftComponent(statLabel);
         contentPane.add(statusBar, BorderLayout.SOUTH);
 
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
