@@ -13,12 +13,10 @@ public class Prozor extends JFrame{
     public static int getDuzina()   { return duzina;}
        
     public Prozor(){
-        System.out.println(duzina+ " " + visina);
-       this.setSize(duzina, visina);
-       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       setResizable(true);
-       setLocationRelativeTo(null);
-       this.setLayout(new FlowLayout());
-	
+        this.setSize(duzina, visina);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        this.setLayout(new FlowLayout());      
     }
 }

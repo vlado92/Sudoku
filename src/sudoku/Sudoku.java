@@ -11,15 +11,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 
 public class Sudoku implements Runnable {
-
+//<editor-fold defaultstate="collapsed" desc="Oko pokretanja svega">
     protected TimerThread timerThread;
 
     @Override
@@ -38,7 +36,7 @@ public class Sudoku implements Runnable {
         statusBar.addRightComponent(timeLabel);
         
         JLabel statLabel = new JLabel();
-        statLabel = Dugme.getLabela();
+        statLabel = Dugme.getStateOfGame();
         statLabel.setHorizontalAlignment(JLabel.CENTER);
         statusBar.setLeftComponent(statLabel);
         contentPane.add(statusBar, BorderLayout.SOUTH);
@@ -61,11 +59,12 @@ public class Sudoku implements Runnable {
         timerThread.setRunning(false);
         System.exit(0);
     }
-
+//</editor-fold>
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Sudoku());
     }
-
+//<editor-fold defaultstate="collapsed" desc="Oko pokretanja svega">
     public class TimerThread extends Thread {
 
         protected boolean isRunning;
@@ -108,5 +107,5 @@ public class Sudoku implements Runnable {
             this.isRunning = isRunning;
         }
 
-    }
+    }//</editor-fold>
 }

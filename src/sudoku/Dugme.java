@@ -1,6 +1,7 @@
 package sudoku;
 import javax.swing.JTextField;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -14,21 +15,22 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Dugme extends JPanel implements MouseListener{
     private int index1;
     private int index2;
-    private Random rand = new Random();
+    private Random randomNumber = new Random();
     private static int velicina = 9;
     private static int korijen = (int) sqrt(velicina);
     private JButton[][] Sudoku = new JButton[velicina][velicina];
     private final Font font = new Font("Arial", Font.PLAIN, 15);
-    private static JLabel labela = new JLabel();
-    public long vreme = System.currentTimeMillis();
-
-    public static JLabel getLabela() {
-        return labela;
+    private static JLabel stateOfGame = new JLabel();
+    private JTextField poljeZaUnos = new JTextField();
+    
+    public static JLabel getStateOfGame() {
+        return stateOfGame;
     }
     
     public static int getVelicina() {
@@ -65,60 +67,60 @@ public class Dugme extends JPanel implements MouseListener{
                 add(Sudoku[i][j]);
             }
         int broj1, broj2, broj3;
-        broj1 = rand.nextInt(velicina+1);
-        broj2 = rand.nextInt(velicina+1) + broj1;
-        broj3 = rand.nextInt(velicina+1) + broj2;
+        broj1 = randomNumber.nextInt(velicina+1);
+        broj2 = randomNumber.nextInt(velicina+1) + broj1;
+        broj3 = randomNumber.nextInt(velicina+1) + broj2;
 
         for(int i=0; i<velicina; i++)
             for(int j=0; j<velicina; j++)
                 Sudoku[i][j].setText(""+((broj1 + korijen*(i%korijen)+(j+(i/korijen)+broj3)%korijen+(j/korijen+broj2)*korijen)%velicina+1));
     //</editor-fold>        
     //ovde raditi iteracije i razmjenjivati redove ili kolone
-        mjesanje(Sudoku);
-        brisanje(Sudoku, 1/*velicina*velicina - 25*/);
-        ispis(Sudoku);
-        kraj(Sudoku);
+        mjesanje();
+        brisanje(2/*velicina*velicina - 25*/);
+        ispis();
+        kraj();
     }
     //mjesanje je moguce jos malo doraditi
-    private void mjesanje(JButton[][] dugme){
+    private void mjesanje(){
     //<editor-fold defaultstate="collapsed" desc=" Algoritam mjesanja ovoga ">
-        int broj1 = rand.nextInt(150);
+        int broj1 = randomNumber.nextInt(100)+60;
     for(int i=0; i<broj1; i++)
     {
         String razmjena = new String();
         for(int blokovi=0; blokovi<3; blokovi++)
         {
-            index1 = rand.nextInt(3);
-            index2 = rand.nextInt(3);
+            index1 = randomNumber.nextInt(3);
+            index2 = randomNumber.nextInt(3);
             for(int kolone=0; kolone <velicina; kolone++)
             {
-                razmjena = dugme[index1+3*blokovi][kolone].getText();
-                dugme[index1+3*blokovi][kolone].setText(dugme[index2+3*blokovi][kolone].getText());
-                dugme[index2+3*blokovi][kolone].setText(razmjena);
+                razmjena = Sudoku[index1+3*blokovi][kolone].getText();
+                Sudoku[index1+3*blokovi][kolone].setText(Sudoku[index2+3*blokovi][kolone].getText());
+                Sudoku[index2+3*blokovi][kolone].setText(razmjena);
             }
         }
         for(int blokovi=0; blokovi<3; blokovi++)
         {
-            index1 = rand.nextInt(3);
-            index2 = rand.nextInt(3);
+            index1 = randomNumber.nextInt(3);
+            index2 = randomNumber.nextInt(3);
             for(int redovi=0; redovi <velicina; redovi++)
             {
-                razmjena = dugme[redovi][index1+3*blokovi].getText();
-                dugme[redovi][index1+3*blokovi].setText(dugme[redovi][index2+3*blokovi].getText());
-                dugme[redovi][index2+3*blokovi].setText(razmjena);
+                razmjena = Sudoku[redovi][index1+3*blokovi].getText();
+                Sudoku[redovi][index1+3*blokovi].setText(Sudoku[redovi][index2+3*blokovi].getText());
+                Sudoku[redovi][index2+3*blokovi].setText(razmjena);
             }
         }
         // ovde bi bilo pozeljno da se mjenjaju blokovi malo
     }
 }//</editor-fold>
-    private void brisanje(JButton[][] dugme, int brisanje){
+    private void brisanje(int brisanje){
     //<editor-fold defaultstate="collapsed" desc=" brisanje clanova ">
     int[][] izbrisani = new int[brisanje][2];
     int zastava, i=0;
     for(;brisanje >0;){
         zastava =2;
-        index1 = rand.nextInt(9);
-        index2 = rand.nextInt(9);
+        index1 = randomNumber.nextInt(9);
+        index2 = randomNumber.nextInt(9);
         izbrisani[i][0]=index1;
         izbrisani[i][1]=index2;
         if(i>=1)
@@ -136,10 +138,10 @@ public class Dugme extends JPanel implements MouseListener{
         else
            zastava =1;
         if(zastava == 1){
-            if(!"".equals(dugme[index1][index2].getText()))
+            if(!"".equals(Sudoku[index1][index2].getText()))
             {
-                dugme[index1][index2].setEnabled(true);
-                dugme[index1][index2].setText(" ");
+                Sudoku[index1][index2].setEnabled(true);
+                Sudoku[index1][index2].setText(" ");
                 brisanje--;
                 i++;
             }
@@ -150,7 +152,7 @@ public class Dugme extends JPanel implements MouseListener{
             System.out.println("nesto trece");
     }
 }//</editor-fold>    
-    private int ispitivanje(JButton[][] dugme, int redovi, int kolona, char t){
+    private int ispitivanje(int redovi, int kolona, char t){
     //<editor-fold defaultstate="collapsed" desc=" Ispitivanje da li je moguce unijeti broj ">
 String[] kolone = new String[9];
 String[] red = new String[9];
@@ -160,12 +162,12 @@ int redP=2, redK=2, redKoc=0, prolaz=0;
 System.out.println(kolona + " " + redovi);
 for(int i=0; i<9; i++)
 {
-    kolone[i] = dugme[i][kolona].getText();
-    red[i] = dugme[redovi][i].getText();
+    kolone[i] = Sudoku[i][kolona].getText();
+    red[i] = Sudoku[redovi][i].getText();
 }
 for(int i=0; i<3; i++)
     for(int j=0; j<3; j++)
-        kocka[prolaz++] = dugme[i+ 3*((int) redovi/3)][j+3*((int)kolona/3)].getText();
+        kocka[prolaz++] = Sudoku[i+ 3*((int) redovi/3)][j+3*((int)kolona/3)].getText();
 for(int i=0; i<9; i++)
     if(red[i].equals(te))
     {
@@ -215,12 +217,12 @@ for(int i=0; i<9; i++)
         return 1;
     return 0;
 }//</editor-fold>
-    private void kraj(JButton[][] dugme){
+    private void kraj(){
     //<editor-fold defaultstate="collapsed" desc=" Ispituje da li su sva polja popunjena ">
     int p=2;
-    for(int i=0; i<9; i++)
-        for(int j=0; j<9; j++)
-            if(dugme[i][j].getText() == " ")
+    for(int i=0; i<velicina; i++)
+        for(int j=0; j<velicina; j++)
+            if(Sudoku[i][j].getText().equals(" "))
             {
                 p=1;
                 break;
@@ -231,7 +233,7 @@ for(int i=0; i<9; i++)
             }
     if(p==0)
     {
-        Dugme.labela.setText("Kraj Igre");
+        Dugme.stateOfGame.setText("Game Over");
         JFrame nesto = new JFrame();
         
         Calendar krajnje = Calendar.getInstance();
@@ -241,25 +243,23 @@ for(int i=0; i<9; i++)
         
         HighScore novi = new HighScore();
         novi.setVisible(true);
-        novi.setScore("IME", krajnje);
-        Menu.setNovaIgra(true);
-        
+        novi.setScore(krajnje);
+        Menu.setNovaIgra(true);   
     }
     else if (p==1)
-        Dugme.labela.setText("Igra traje!");
+        Dugme.stateOfGame.setText("Still playing!");
     else
-        Dugme.labela.setText("Odredjena greska");
+        Dugme.stateOfGame.setText("ERROR");
 }////</editor-fold>
-    
+    private void ispis(){
     //<editor-fold defaultstate="collapsed" desc="Finkcija koja u konzolu ispisuje Sudoku">
-    private void ispis(JButton[][] dugme){
     for(int i=0; i<9; i++)
     {
         for(int j=0; j<9; j++)
-            if(dugme[i][j].getText() == " ")
+            if(Sudoku[i][j].getText() == " ")
               System.out.print("? ");
             else
-                System.out.print(dugme[i][j].getText() + " ");
+                System.out.print(Sudoku[i][j].getText() + " ");
         System.out.println();
     }
 }
@@ -272,15 +272,12 @@ public void paint(Graphics g) {
             for(int j=0; j<korijen; j++)
             g.drawRect(i*Prozor.getDuzina()/(korijen) + 2, j*(Prozor.getVisina())/korijen+ 2, Prozor.getDuzina()/korijen - 2, (Prozor.getVisina())/korijen - 2);
         }
-    //ovde je potrebno ponovo osmisliti kako iscrtati sve ovo sa dugmadima
 }
 
 //<editor-fold defaultstate="collapsed" desc="Event Handling">
 //vjerovatno dobro, ali treba jos ispitivanja
     @Override
     public void mouseClicked(MouseEvent e) {
-        
-        System.out.println(this.getMousePosition().toString());
         for(int i=0; i<9; i++)
             for(int j=0; j<9; j++)
                 if(this.getMousePosition().x >= Sudoku[i][j].getX() && this.getMousePosition().x <=Sudoku[i][j].getWidth()*(j+1)
@@ -292,57 +289,65 @@ public void paint(Graphics g) {
                         }
                         else
                         {
+                            for(int k=0; k<velicina; k++)
+                                for(int l=0; l<velicina;l++)
+                                    if(!Sudoku[k][l].isVisible())
+                                    {
+                                        Sudoku[k][l].setVisible(true);
+                                        poljeZaUnos.setVisible(false);
+                                    }
                             System.out.println("MOGUCE");
-                            final JTextField text = new JTextField();
-                            text.setBounds(Sudoku[i][j].getBounds());
+                            poljeZaUnos.setBounds(Sudoku[i][j].getBounds());
                             Sudoku[i][j].setVisible(false);
-                            Sudoku[i][j].setText("");
-                            text.setVisible(true);
-                            text.setEnabled(true);
-                            text.setFont(font);
-                            add(text);
-                            final int prvi = i;
+                            Sudoku[i][j].setText(" ");
+                            poljeZaUnos.setText("");
+                            poljeZaUnos.setVisible(true);
+                            poljeZaUnos.setEnabled(true);
+                            poljeZaUnos.setFont(font);
+                            add(poljeZaUnos);
+                            poljeZaUnos.setHorizontalAlignment(JTextField.CENTER);
                             final int drugi = j;
-                            text.setHorizontalAlignment(JTextField.CENTER);
-                            KeyListener t = new KeyListener() {               
-                @Override
-                public void keyTyped(KeyEvent e) {
-                    if(e.getKeyChar() <= '9' && e.getKeyChar() >='1')
-                    {
-                        System.out.println(e.getKeyChar());
-                        if(ispitivanje(Sudoku, prvi, drugi, e.getKeyChar()) == 1)
-                        {
-                            Sudoku[prvi][drugi].setText("" + e.getKeyChar());
-                            text.setVisible(false);
-                            Sudoku[prvi][drugi].setVisible(true);
-                            ispis(Sudoku);
-                            kraj(Sudoku);
-                        }
-                        text.setText("");
-                    }
-                    else if(e.getKeyChar() == '0')
-                    {
-                        Sudoku[prvi][drugi].setText(" ");
-                        text.setVisible(false);
-                        Sudoku[prvi][drugi].setVisible(true);
-                        ispis(Sudoku);
-                        text.setText("");
-                        
-                    }
-                    else
-                    {
-                        e.consume();
-                        text.setText("");
-                    }
-                }
-                
-                @Override
-                public void keyPressed(KeyEvent e) {}
-                @Override
-                public void keyReleased(KeyEvent e) {}
-            };
-                            text.addKeyListener( t);
-                            addKeyListener(t);
+                            final int prvi = i;
+                            KeyListener keyListener = new KeyListener() {
+                            @Override public void keyTyped(KeyEvent e) {
+                                if(e.getKeyChar() <= '9' && e.getKeyChar() >='1')
+                                {
+                                    System.out.println(e.getKeyChar());
+                                    if(ispitivanje(prvi, drugi, e.getKeyChar()) == 1)
+                                    {
+                                        Sudoku[prvi][drugi].setText("" + e.getKeyChar());
+                                        poljeZaUnos.setVisible(false);
+                                        Sudoku[prvi][drugi].setVisible(true);
+                                        ispis();
+                                        kraj();
+                                    }
+                                    else
+                                    {
+                                        poljeZaUnos.setVisible(false);
+                                        Sudoku[prvi][drugi].setVisible(true);
+             //                           Component rootPane = null;
+             //                           JOptionPane.showMessageDialog(rootPane, "Taj broj nije moguce unijeti!", "Upozorenje", JOptionPane.WARNING_MESSAGE);
+                                    }
+                                }
+                                else if(e.getKeyChar() == '0')
+                                {
+                                    Sudoku[prvi][drugi].setText(" ");
+                                    poljeZaUnos.setVisible(false);
+                                    Sudoku[prvi][drugi].setVisible(true);
+                                    ispis();
+                                    poljeZaUnos.setText(null);
+                                }
+                                else
+                                {
+                                    e.consume();
+                                    poljeZaUnos.setText("");
+                                }
+                            }
+                            @Override public void keyPressed(KeyEvent e) {}
+                            @Override public void keyReleased(KeyEvent e) {}
+                            };
+                            poljeZaUnos.addKeyListener(keyListener);
+                            addKeyListener(keyListener);
                             break;
                         }
     }
