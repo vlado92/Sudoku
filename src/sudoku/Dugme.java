@@ -27,6 +27,8 @@ public class Dugme extends JPanel implements MouseListener{
     private static JLabel stateOfGame = new JLabel();
     private JTextField poljeZaUnos = new JTextField();
     
+    private static String tezina;
+    
     public static JLabel getStateOfGame() {
         return stateOfGame;
     }
@@ -39,9 +41,9 @@ public class Dugme extends JPanel implements MouseListener{
         return korijen;
     }
     
-    public Dugme() {
+    public Dugme(String tezinaString, int tezinaInt) {
     //<editor-fold defaultstate="collapsed" desc=" Generisanje Dugmadi ">
-    
+        tezina = tezinaString;
         int duzina = Prozor.getDuzina();
         int visina = Prozor.getVisina();
         setPreferredSize(new Dimension(duzina, visina));
@@ -64,22 +66,13 @@ public class Dugme extends JPanel implements MouseListener{
                 addMouseListener(this);
                 add(Sudoku[i][j]);
             }
-        int broj1, broj2, broj3;
-        broj1 = randomNumber.nextInt(velicina+1);
-        broj2 = randomNumber.nextInt(velicina+1) + broj1;
-        broj3 = randomNumber.nextInt(velicina+1) + broj2;
-
-        for(int i=0; i<velicina; i++)
-            for(int j=0; j<velicina; j++)
-                Sudoku[i][j].setText(""+((broj1 + korijen*(i%korijen)+(j+(i/korijen)+broj3)%korijen+(j/korijen+broj2)*korijen)%velicina+1));
-    //</editor-fold>        
-    //ovde raditi iteracije i razmjenjivati redove ili kolone
-        mjesanje();
-        brisanje(2/*velicina*velicina - 25*/);
-        ispis();
-        kraj();
+    //</editor-fold>
+    algoritam();
+    mjesanje();
+    brisanje(tezinaInt);
+    ispis();
+    kraj(tezinaString);
     }
-    //mjesanje je moguce jos malo doraditi
     private void mjesanje(){
     //<editor-fold defaultstate="collapsed" desc=" Algoritam mjesanja ovoga ">
         int broj1 = randomNumber.nextInt(100)+60;
@@ -136,7 +129,7 @@ public class Dugme extends JPanel implements MouseListener{
         else
            zastava =1;
         if(zastava == 1){
-            if(!"".equals(Sudoku[index1][index2].getText()))
+            if(!" ".equals(Sudoku[index1][index2].getText()))
             {
                 Sudoku[index1][index2].setEnabled(true);
                 Sudoku[index1][index2].setText(" ");
@@ -215,7 +208,7 @@ for(int i=0; i<9; i++)
         return 1;
     return 0;
 }//</editor-fold>
-    private void kraj(){
+    private void kraj(String tezina){
     //<editor-fold defaultstate="collapsed" desc=" Ispituje da li su sva polja popunjena ">
     int p=2;
     for(int i=0; i<velicina; i++)
@@ -233,16 +226,10 @@ for(int i=0; i<9; i++)
     {
         Dugme.stateOfGame.setText("Game Over");
         JFrame nesto = new JFrame();
-        
-        Calendar krajnje = Calendar.getInstance();
-        krajnje.add(Calendar.HOUR_OF_DAY, -(Menu.vrijeme.get(Calendar.HOUR_OF_DAY)));
-        krajnje.add(Calendar.MINUTE, -(Menu.vrijeme.get(Calendar.MINUTE)));
-        krajnje.add(Calendar.SECOND, -(Menu.vrijeme.get(Calendar.SECOND)));
-        
-        HighScore novi = new HighScore();
+        long krajnje = Calendar.getInstance().getTimeInMillis()- IzborTezine.vrijeme.getTimeInMillis();        
+        HighScore novi = new HighScore(tezina);
         novi.setVisible(true);
         novi.setScore(krajnje);
-        Menu.setNovaIgra(true);   
     }
     else if (p==1)
         Dugme.stateOfGame.setText("Still playing!");
@@ -262,7 +249,20 @@ for(int i=0; i<9; i++)
     }
 }
     //</editor-fold>
-@Override
+    private void algoritam(){
+    //<editor-fold defaultstate="collapsed" desc="Algoritam postavljanja brojeva">
+        int broj1, broj2, broj3;
+        broj1 = randomNumber.nextInt(velicina+1);
+        broj2 = randomNumber.nextInt(velicina+1) + broj1;
+        broj3 = randomNumber.nextInt(velicina+1) + broj2;
+
+        for(int i=0; i<velicina; i++)
+            for(int j=0; j<velicina; j++)
+                Sudoku[i][j].setText(""+((broj1 + korijen*(i%korijen)+(j+(i/korijen)+broj3)%korijen+(j/korijen+broj2)*korijen)%velicina+1));
+    }
+    //</editor-fold>
+    
+    @Override
 public void paint(Graphics g) {
     super.paint(g);
     for(int i=0; i<korijen; i++)
@@ -317,7 +317,7 @@ public void paint(Graphics g) {
                                         poljeZaUnos.setVisible(false);
                                         Sudoku[prvi][drugi].setVisible(true);
                                         ispis();
-                                        kraj();
+                                        kraj(tezina);
                                     }
                                     else
                                     {

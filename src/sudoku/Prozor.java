@@ -45,11 +45,11 @@ public class Prozor extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e){
     Calendar currentCalendar;
     currentCalendar = Calendar.getInstance();
-        int minute = (currentCalendar.get(Calendar.MINUTE)- Menu.vrijeme.get(Calendar.MINUTE));
+        int minute = (currentCalendar.get(Calendar.MINUTE)- IzborTezine.vrijeme.get(Calendar.MINUTE));
         String Minute = (minute < 10) ? ("0"+minute) : (""+minute);
-        int sekunde = (currentCalendar.get(Calendar.SECOND)- Menu.vrijeme.get(Calendar.SECOND));
+        int sekunde = (currentCalendar.get(Calendar.SECOND)- IzborTezine.vrijeme.get(Calendar.SECOND));
                         String sekund = (sekunde < 10) ? ("0"+sekunde) :(""+sekunde);
-                        String prenesi = (Menu.novaIgra.isEnabled())? "00:00":""+Minute +":"+sekund; 
+                        String prenesi = (IzborTezine.getVisible())? "00:00":""+Minute +":"+sekund; 
                         timeLabel.setText(prenesi);
 
     }

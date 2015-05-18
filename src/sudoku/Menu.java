@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sudoku;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Calendar;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -19,18 +13,19 @@ import javax.swing.JMenuItem;
  * @author Username
  */
 public class Menu {
-    public static JMenuItem novaIgra = new JMenuItem("New Game");
-    public static Calendar vrijeme = Calendar.getInstance();
-    public static void setNovaIgra(boolean novaIgra) {
-        Menu.novaIgra.setEnabled(novaIgra);
-    }
-    
     public Menu(final Prozor novi) {
             JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("File");
         JMenu pomoc = new JMenu("Help");
         JMenu rezultati = new JMenu("Result");
+        
         JMenuItem izlaz = new JMenuItem("Exit");
+        JMenuItem novaIgra = new JMenuItem("New Game");
+        
+        JMenuItem lako = new JMenuItem("Easy");
+        JMenuItem srednje = new JMenuItem("Medium");
+        JMenuItem tesko = new JMenuItem("Hard");
+        JMenuItem test = new JMenuItem("Test");
         
         pomoc.addMouseListener(new MouseListener() {
 
@@ -45,18 +40,37 @@ public class Menu {
                 @Override public void mouseEntered(MouseEvent e) {}
                 @Override public void mouseExited(MouseEvent e) {}
             }); 
-        rezultati.addMouseListener(new MouseListener() {
+        lako.addActionListener(new ActionListener() {
 
                 @Override
-                public void mouseClicked(MouseEvent e) {
-                   HighScore nova = new HighScore();    
+                public void actionPerformed(ActionEvent e) {
+                    HighScore nova = new HighScore("Lako");
+                    nova.setVisible(true);
+                }
+            }); 
+        srednje.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    HighScore nova = new HighScore("Srednje");
+                    nova.setVisible(true);
+                }
+            }); 
+        tesko.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    HighScore nova = new HighScore("Tesko");
                    nova.setVisible(true);
                 }
+            }); 
+        test.addActionListener(new ActionListener() {
 
-                @Override public void mousePressed(MouseEvent e) {}
-                @Override public void mouseReleased(MouseEvent e) {}
-                @Override public void mouseEntered(MouseEvent e) {}
-                @Override public void mouseExited(MouseEvent e) {}
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    HighScore nova = new HighScore("Tesko");
+                   nova.setVisible(true);
+                }
             }); 
         
         izlaz.addActionListener(new ActionListener(){
@@ -69,28 +83,19 @@ public class Menu {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-            Dugme dugme = new Dugme();
-            novi.add(dugme);
-            novi.pack();
-            vrijeme = Calendar.getInstance();
-            novaIgra.setEnabled(false);
-            
+                IzborTezine izbor = new IzborTezine(novi);
+                izbor.setVisible(true);
             }
         });        
         
-        JMenuItem opcije = new JMenuItem("Options");
-        opcije.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                           Pomoc nova = new Pomoc();    
-                   nova.setVisible(true);
-            }
-        });
-        
-        
         file.add(novaIgra);
-        file.add(opcije);
         file.add(izlaz);
+        
+        rezultati.add(lako);
+        rezultati.add(srednje);
+        rezultati.add(tesko);
+        rezultati.add(test);
+        
         novi.setJMenuBar(menuBar);
         menuBar.add(file);
         menuBar.add(rezultati);

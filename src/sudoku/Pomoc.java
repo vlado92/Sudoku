@@ -1,8 +1,6 @@
 package sudoku;
 
-import com.sun.org.apache.xml.internal.serialize.LineSeparator;
 import java.awt.HeadlessException;
-import java.util.Calendar;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
