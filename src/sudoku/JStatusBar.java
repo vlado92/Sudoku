@@ -24,7 +24,7 @@ public class JStatusBar extends JPanel {
         createPartControl();
     }
 
-    protected void createPartControl() {    
+    protected void createPartControl() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(getWidth(), 23));
 
@@ -83,4 +83,3 @@ public class JStatusBar extends JPanel {
     }
 
 }
-

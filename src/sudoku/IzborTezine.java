@@ -12,21 +12,20 @@ import java.util.Calendar;
  * @author Username
  */
 public class IzborTezine extends javax.swing.JFrame {
+
     private static String tezinaString;
     private static Prozor prozor;
     public static Calendar vrijeme = Calendar.getInstance();
-    private static boolean visible;
-    
-    public static boolean getVisible()
-    {
+    private static boolean visible = true;
+
+    public static boolean getVisible() {
         return visible;
     }
-    
+
     public static String getTezina() {
         return tezinaString;
     }
-    
-    
+
     public IzborTezine(Prozor neki) {
         initComponents();
         prozor = neki;
@@ -115,7 +114,7 @@ public class IzborTezine extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-    Dugme dugme = new Dugme("Srednje", 50);
+        Dugme dugme = new Dugme("Srednje", 50);
         dugme.setVisible(true);
         prozor.add(dugme);
         prozor.pack();
@@ -125,19 +124,19 @@ public class IzborTezine extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-Dugme dugme = new Dugme("Tesko", 60);
+        Dugme dugme = new Dugme("Tesko", 60);
         dugme.setVisible(true);
-        prozor.add(dugme);        
+        prozor.add(dugme);
         vrijeme = Calendar.getInstance();
         this.setVisible(false);
         visible = false;
         prozor.pack();    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-Dugme dugme = new Dugme("Test", 5);
+        Dugme dugme = new Dugme("Test", 5);
         dugme.setVisible(true);
         prozor.add(dugme);
-        prozor.pack();      
+        prozor.pack();
         this.setVisible(false);
         visible = false;
         vrijeme = Calendar.getInstance();
