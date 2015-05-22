@@ -8,12 +8,12 @@ import javax.swing.JLabel;
  *
  * @author Username
  */
-public class Pomoc extends JFrame {
+public class Help extends JFrame {
 
     private JLabel ime = new JLabel();
     private JLabel proizvodnja = new JLabel();
 
-    public Pomoc() throws HeadlessException {
+    public Help() throws HeadlessException {
         this.setTitle("Pomoć");
         this.setSize(300, 300);
         //this.setResizable(false);

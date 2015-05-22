@@ -14,25 +14,25 @@ import javax.swing.JMenuItem;
  */
 public class Menu {
 
-    public Menu(final Prozor novi) {
+    public Menu(final Frame novi) {
         JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("File");
-        JMenu pomoc = new JMenu("Help");
-        JMenu rezultati = new JMenu("Result");
+        JMenu help = new JMenu("Help");
+        JMenu result = new JMenu("Result");
 
-        JMenuItem izlaz = new JMenuItem("Exit");
-        JMenuItem novaIgra = new JMenuItem("New Game");
+        JMenuItem exit = new JMenuItem("Exit");
+        JMenuItem newGame = new JMenuItem("New Game");
 
         JMenuItem lako = new JMenuItem("Easy");
         JMenuItem srednje = new JMenuItem("Medium");
         JMenuItem tesko = new JMenuItem("Hard");
         JMenuItem test = new JMenuItem("Test");
 
-        pomoc.addMouseListener(new MouseListener() {
+        help.addMouseListener(new MouseListener() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                Pomoc nova = new Pomoc();
+                Help nova = new Help();
                 nova.setVisible(true);
             }
 
@@ -80,37 +80,38 @@ public class Menu {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                HighScore nova = new HighScore("Tesko");
+                HighScore nova = new HighScore("Test");
                 nova.setVisible(true);
             }
         });
 
-        izlaz.addActionListener(new ActionListener() {
+        exit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
-        novaIgra.addActionListener(new ActionListener() {
+        newGame.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                IzborTezine izbor = new IzborTezine(novi);
+                DifficultyLevel izbor = new DifficultyLevel(novi);
                 izbor.setVisible(true);
+                izbor.setLocationRelativeTo(novi);
             }
         });
 
-        file.add(novaIgra);
-        file.add(izlaz);
+        file.add(newGame);
+        file.add(exit);
 
-        rezultati.add(lako);
-        rezultati.add(srednje);
-        rezultati.add(tesko);
-        rezultati.add(test);
+        result.add(lako);
+        result.add(srednje);
+        result.add(tesko);
+        result.add(test);
 
         novi.setJMenuBar(menuBar);
         menuBar.add(file);
-        menuBar.add(rezultati);
-        menuBar.add(pomoc);
+        menuBar.add(result);
+        menuBar.add(help);
     }
 }

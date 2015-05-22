@@ -15,84 +15,85 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Random;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.QUESTION_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
 import javax.swing.JTextField;
 
 public class HighScore extends JFrame {
 
-    private static JLabel[] imeIgraca = new JLabel[11];
-    private static JLabel[] pozicija = new JLabel[11];
-    private static JLabel[] postignutoVrijeme = new JLabel[11];
-    private static long[] vrijeme = new long[11];
-    private static ArrayList<String> rijeci = new ArrayList<>();
-    private static String tezina;
+    private static JLabel[] playerName = new JLabel[11];
+    private static JLabel[] position = new JLabel[11];
+    private static JLabel[] playerTime = new JLabel[11];
+    private static long[] time = new long[11];
+    private static ArrayList<String> scoreTracker = new ArrayList<>();
+    private static String dificultyString;
 
     public HighScore(String tesko) throws HeadlessException {
         this.setTitle("High Score!");
         this.setSize(350, 350);
-        tezina = tesko;
+        dificultyString = tesko;
         for (int i = 0; i < 11; i++) {
-            imeIgraca[i] = new JLabel();
-            postignutoVrijeme[i] = new JLabel();
-            pozicija[i] = new JLabel();
+            playerName[i] = new JLabel();
+            playerTime[i] = new JLabel();
+            position[i] = new JLabel();
         }
 
         readTextFileLineByLine();
         for (int i = 0; i < 11; i++) {
-            pozicija[i].setBounds(0, i * 20, 20, (i + 1) * 20);
-            imeIgraca[i].setBounds(40, i * 20, 220, (i + 1) * 20);
-            postignutoVrijeme[i].setBounds(240, i * 20, 300, (i + 1) * 20);
-            pozicija[i].setHorizontalAlignment(JLabel.CENTER);
-            imeIgraca[i].setHorizontalAlignment(JLabel.LEFT);
-            add(pozicija[i]);
-            add(imeIgraca[i]);
-            add(postignutoVrijeme[i]);
+            position[i].setBounds(0, i * 20, 20, (i + 1) * 20);
+            playerName[i].setBounds(40, i * 20, 220, (i + 1) * 20);
+            playerTime[i].setBounds(240, i * 20, 300, (i + 1) * 20);
+            position[i].setHorizontalAlignment(JLabel.CENTER);
+            playerName[i].setHorizontalAlignment(JLabel.LEFT);
+            add(position[i]);
+            add(playerName[i]);
+            add(playerTime[i]);
         }
-        postignutoVrijeme[10].setVisible(false);
-        imeIgraca[10].setVisible(false);
-        pozicija[10].setVisible(false);
+        playerTime[10].setVisible(false);
+        playerName[10].setVisible(false);
+        position[10].setVisible(false);
     }
 
     public void setScore(long Score) {
-        Calendar tabelarno = Calendar.getInstance();
-        Calendar kalendar = Calendar.getInstance();
+        Calendar timeOnScore = Calendar.getInstance();
+        Calendar timeOfPlayer = Calendar.getInstance();
         for (int i = 0; i < 10; i++) {
-            kalendar.setTimeInMillis(Score);
-            tabelarno.setTimeInMillis(vrijeme[i]);
+            timeOfPlayer.setTimeInMillis(Score);
+            timeOnScore.setTimeInMillis(time[i]);
             final long score = Score;
-            if (kalendar.before(tabelarno)) {
+            if (timeOfPlayer.before(timeOnScore)) {
                 for (int k = 9; k >= i; k--) {
-                    imeIgraca[k + 1].setText(imeIgraca[k].getText());
-                    postignutoVrijeme[k + 1].setText(postignutoVrijeme[k].getText());
+                    playerName[k + 1].setText(playerName[k].getText());
+                    playerTime[k + 1].setText(playerTime[k].getText());
                 }
-                postignutoVrijeme[i].setText(konvertuj(kalendar));
-                final JTextField naziv = new JTextField();
-                naziv.setBounds(40, i * 20, 160, (i + 1) * 20);
-                naziv.setVisible(true);
-                naziv.setEnabled(true);
-                add(naziv);
+                playerTime[i].setText(convertTimeFromLongToString(timeOfPlayer));
+                final JTextField nameInput = new JTextField();
+                nameInput.setBounds(40, i * 20, 160, (i + 1) * 20);
+                nameInput.setVisible(true);
+                nameInput.setEnabled(true);
+                add(nameInput);
                 for (int j = 0; j < 11; j++) {
-                    add(pozicija[j]);
-                    add(imeIgraca[j]);
-                    add(postignutoVrijeme[j]);
+                    add(position[j]);
+                    add(playerName[j]);
+                    add(playerTime[j]);
                 }
-                imeIgraca[i].setVisible(false);
+                playerName[i].setVisible(false);
                 final int index = i;
-                naziv.addKeyListener(new KeyListener() {
+                nameInput.addKeyListener(new KeyListener() {
                     @Override
                     public void keyTyped(KeyEvent e) {
-                        int pritisnuto = (int) e.getKeyChar();
-                        if (pritisnuto == 10) {
-                            naziv.setVisible(false);
-                            imeIgraca[index].setText(naziv.getText());
-                            naziv.setText(null);
-                            imeIgraca[index].setVisible(true);
+                        int pressed = (int) e.getKeyChar();
+                        if (pressed == 10) {
+                            nameInput.setVisible(false);
+                            playerName[index].setText(nameInput.getText());
+                            nameInput.setText(null);
+                            playerName[index].setVisible(true);
 
-                            String zamjeni = "" + (index) + "-" + imeIgraca[index].getText() + "." + score;
-                            writeTextFileLineByLine(zamjeni, index);
+                            String nameToPut = "" + (index) + "-" + playerName[index].getText() + "." + score;
+                            writeTextFileLineByLine(nameToPut, index);
                         }
                     }
 
@@ -108,17 +109,13 @@ public class HighScore extends JFrame {
                 break;
             }
         }
-    }
+    }; 
+    public static String convertTimeFromLongToString(Calendar time) {
+        return ((time.get(Calendar.HOUR) < 10) ? ("0" + (time.get(Calendar.HOUR_OF_DAY) - 1)) : ("" + time.get(Calendar.HOUR_OF_DAY)))
+                + ":" + ((time.get(Calendar.MINUTE) < 10) ? ("0" + time.get(Calendar.MINUTE)) : ("" + time.get(Calendar.MINUTE)))
+                + ":" + ((time.get(Calendar.SECOND) < 10) ? ("0" + time.get(Calendar.SECOND)) : ("" + time.get(Calendar.SECOND)));
 
-    ; 
-    public static String konvertuj(Calendar vrijeme) {
-        return ((vrijeme.get(Calendar.HOUR) < 10) ? ("0" + (vrijeme.get(Calendar.HOUR_OF_DAY) - 1)) : ("" + vrijeme.get(Calendar.HOUR_OF_DAY)))
-                + ":" + ((vrijeme.get(Calendar.MINUTE) < 10) ? ("0" + vrijeme.get(Calendar.MINUTE)) : ("" + vrijeme.get(Calendar.MINUTE)))
-                + ":" + ((vrijeme.get(Calendar.SECOND) < 10) ? ("0" + vrijeme.get(Calendar.SECOND)) : ("" + vrijeme.get(Calendar.SECOND)));
-
-    }
-
-    ;
+    };
     
     public static void readTextFileLineByLine() {
         FileReader in = null;
@@ -126,29 +123,29 @@ public class HighScore extends JFrame {
         BufferedReader bin = null;
         try {
 
-            File file = new File("D:\\programiranje\\Java\\projekat\\Sudoku\\files\\rezultati" + tezina + ".txt");
-            rijeci.clear();
+            File file = new File(".\\files\\rezultati" + dificultyString + ".txt");
+            scoreTracker.clear();
             System.out.println(file.toPath().toString());
             in = new FileReader(file);
             bin = new BufferedReader(in);
             String data;
             while ((data = bin.readLine()) != null) {
-                rijeci.add(data);
+                scoreTracker.add(data);
             }
 
             String nesto;
             int oznakaSubstringa;
             String milis;
-            for (int i = 0; i < rijeci.size(); i++) {
-                oznakaSubstringa = rijeci.get(i).indexOf('.');
-                imeIgraca[i].setText(rijeci.get(i).substring(2, oznakaSubstringa));
-                pozicija[i].setText("" + (i + 1));
-                oznakaSubstringa = rijeci.get(i).indexOf('.') + 1;
-                milis = rijeci.get(i).substring(oznakaSubstringa);
+            for (int i = 0; i < scoreTracker.size(); i++) {
+                oznakaSubstringa = scoreTracker.get(i).indexOf('.');
+                playerName[i].setText(scoreTracker.get(i).substring(2, oznakaSubstringa));
+                position[i].setText("" + (i + 1));
+                oznakaSubstringa = scoreTracker.get(i).indexOf('.') + 1;
+                milis = scoreTracker.get(i).substring(oznakaSubstringa);
                 Calendar konvertor = Calendar.getInstance();
-                vrijeme[i] = Long.parseLong(milis);
-                konvertor.setTimeInMillis(vrijeme[i]);
-                postignutoVrijeme[i].setText(konvertuj(konvertor));
+                time[i] = Long.parseLong(milis);
+                konvertor.setTimeInMillis(time[i]);
+                playerTime[i].setText(convertTimeFromLongToString(konvertor));
             }
 
         } catch (IOException ex) {
@@ -176,13 +173,13 @@ public class HighScore extends JFrame {
         FileWriter out = null;
 
         try {
-            rijeci.set(unos, duzina);
+            scoreTracker.set(unos, duzina);
             int dataInt;
-            out = new FileWriter("D:\\programiranje\\Java\\projekat\\Sudoku\\files\\rezultati" + tezina + ".txt");
+            out = new FileWriter(".\\files\\rezultati" + dificultyString + ".txt");
 
-            for (int i = 0; i < rijeci.size(); i++) {
-                for (int j = 0; j < rijeci.get(i).length(); j++) {
-                    out.write(rijeci.get(i).charAt(j));
+            for (int i = 0; i < scoreTracker.size(); i++) {
+                for (int j = 0; j < scoreTracker.get(i).length(); j++) {
+                    out.write(scoreTracker.get(i).charAt(j));
                 }
                 out.write(10);
             }

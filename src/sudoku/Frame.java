@@ -10,22 +10,22 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
-public class Prozor extends JFrame implements ActionListener {
+public class Frame extends JFrame implements ActionListener {
 
-    private static final int duzina = 183 * Dugme.getKorijen();
-    private static final int visina = 183 * Dugme.getKorijen();
+    private static final int width = 183 * Buttons.getSqrtOfSudokuSize();
+    private static final int height = 183 * Buttons.getSqrtOfSudokuSize();
     private final JLabel timeLabel = new JLabel();
 
     public static int getVisina() {
-        return visina;
+        return height;
     }
 
     public static int getDuzina() {
-        return duzina;
+        return width;
     }
 
-    public Prozor() {
-        this.setSize(duzina, visina);
+    public Frame() {
+        this.setSize(width, height);
         this.setTitle("Sudoku");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -40,7 +40,7 @@ public class Prozor extends JFrame implements ActionListener {
         statusBar.addRightComponent(timeLabel);
 
         JLabel statLabel = new JLabel();
-        statLabel = Dugme.getStateOfGame();
+        statLabel = Buttons.getStateOfGame();
         statLabel.setHorizontalAlignment(JLabel.CENTER);
         statusBar.setLeftComponent(statLabel);
         contentPane.add(statusBar, BorderLayout.SOUTH);
@@ -51,12 +51,11 @@ public class Prozor extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Calendar currentCalendar;
         currentCalendar = Calendar.getInstance();
-        int minute = (currentCalendar.get(Calendar.MINUTE) - IzborTezine.vrijeme.get(Calendar.MINUTE));
+        int minute = (currentCalendar.get(Calendar.MINUTE) - DifficultyLevel.startTime.get(Calendar.MINUTE));
         String Minute = (minute < 10) ? ("0" + minute) : ("" + minute);
-        int sekunde = (currentCalendar.get(Calendar.SECOND) - IzborTezine.vrijeme.get(Calendar.SECOND));
+        int sekunde = (currentCalendar.get(Calendar.SECOND) - DifficultyLevel.startTime.get(Calendar.SECOND));
         String sekund = (sekunde < 10) ? ("0" + sekunde) : ("" + sekunde);
-        String prenesi = (IzborTezine.getVisible()) ? "00:00" : "" + Minute + ":" + sekund;
+        String prenesi = (DifficultyLevel.getVisible()) ? "00:00" : "" + Minute + ":" + sekund;
         timeLabel.setText(prenesi);
-
     }
 }
