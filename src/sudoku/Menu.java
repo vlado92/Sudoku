@@ -14,7 +14,7 @@ import javax.swing.JMenuItem;
  */
 public class Menu {
 
-    public Menu(final Frame novi) {
+    public Menu(final Frame frame) {
         JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("File");
         JMenu help = new JMenu("Help");
@@ -34,6 +34,7 @@ public class Menu {
             public void mouseClicked(MouseEvent e) {
                 Help nova = new Help();
                 nova.setVisible(true);
+                nova.setLocationRelativeTo(frame);
             }
 
             @Override
@@ -58,6 +59,7 @@ public class Menu {
             public void actionPerformed(ActionEvent e) {
                 HighScore nova = new HighScore("Lako");
                 nova.setVisible(true);
+                nova.setLocationRelativeTo(frame);
             }
         });
         srednje.addActionListener(new ActionListener() {
@@ -66,6 +68,7 @@ public class Menu {
             public void actionPerformed(ActionEvent e) {
                 HighScore nova = new HighScore("Srednje");
                 nova.setVisible(true);
+                nova.setLocationRelativeTo(frame);
             }
         });
         tesko.addActionListener(new ActionListener() {
@@ -74,6 +77,7 @@ public class Menu {
             public void actionPerformed(ActionEvent e) {
                 HighScore nova = new HighScore("Tesko");
                 nova.setVisible(true);
+                nova.setLocationRelativeTo(frame);
             }
         });
         test.addActionListener(new ActionListener() {
@@ -82,6 +86,7 @@ public class Menu {
             public void actionPerformed(ActionEvent e) {
                 HighScore nova = new HighScore("Test");
                 nova.setVisible(true);
+                nova.setLocationRelativeTo(frame);
             }
         });
 
@@ -95,9 +100,9 @@ public class Menu {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                DifficultyLevel izbor = new DifficultyLevel(novi);
+                DifficultyLevel izbor = new DifficultyLevel(frame);
                 izbor.setVisible(true);
-                izbor.setLocationRelativeTo(novi);
+                izbor.setLocationRelativeTo(frame);
             }
         });
 
@@ -109,7 +114,7 @@ public class Menu {
         result.add(tesko);
         result.add(test);
 
-        novi.setJMenuBar(menuBar);
+        frame.setJMenuBar(menuBar);
         menuBar.add(file);
         menuBar.add(result);
         menuBar.add(help);

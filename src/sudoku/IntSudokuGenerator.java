@@ -5,7 +5,7 @@ import java.util.Random;
 public class IntSudokuGenerator {
   
     static int N = Buttons.getSudokuSize();
-     static int grid[][] = new int[N][N];
+    static int grid[][] = new int[N][N];
      
     static class Cell {
 
@@ -142,6 +142,9 @@ public class IntSudokuGenerator {
         int broj1 = rand.nextInt(N);
         int broj2 = rand.nextInt(N)+broj1;
         int broj3 = rand.nextInt(N)+broj1 + broj2;
+        for(int i=0; i<N; i++)
+            for(int j=0; j<N; j++)
+                grid[i][j] = 0;
         for(int j=0; j<N; j++)
             grid[0][j]= (broj1 + +(j+broj3)%Buttons.getSqrtOfSudokuSize() +
                     (j/Buttons.getSqrtOfSudokuSize()+broj2)*Buttons.getSqrtOfSudokuSize())%N+1;
@@ -161,13 +164,14 @@ public class IntSudokuGenerator {
  static void printGrid(int grid[][]) {
      
   for (int row = 0; row < N; row++) {
-   for (int col = 0; col < N; col++)
-   {
+        if(row%3==0)
+            System.out.println();
+    for (int col = 0; col < N; col++)
+    {
        if(col%3==0)
            System.out.print("\t");
        System.out.print(grid[row][col]+" ");
    }
-   
    System.out.println();
   }
  }

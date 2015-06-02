@@ -10,24 +10,24 @@ import javax.swing.JLabel;
  */
 public class Help extends JFrame {
 
-    private JLabel ime = new JLabel();
-    private JLabel proizvodnja = new JLabel();
+    private JLabel createdBy = new JLabel();
+    private JLabel lastEdit = new JLabel();
 
     public Help() throws HeadlessException {
-        this.setTitle("Pomoć");
+        this.setTitle("Help");
         this.setSize(300, 300);
-        //this.setResizable(false);
+        this.setResizable(false);
+        
         String noviRed = "nesto\n drugo";
         System.out.println(noviRed);
-        ime.setText("Napravio: Vladimir Kunarac");
-        proizvodnja.setText("Poslednja izmjena: 10.5.2015. 17:33");
-        ime.setBounds(0, 0, 200, 20);
-        proizvodnja.setBounds(0, 30, 500, 50);
-        ime.setVerticalAlignment(JLabel.TOP);
-        proizvodnja.setVerticalAlignment(JLabel.TOP);
+        createdBy.setText("Napravio: Vladimir Kunarac");
+        lastEdit.setText("Poslednja izmjena: 10.5.2015. 17:33");
+        createdBy.setBounds(0, 0, 200, 20);
+        lastEdit.setBounds(0, 30, 500, 50);
+        createdBy.setVerticalAlignment(JLabel.TOP);
+        lastEdit.setVerticalAlignment(JLabel.TOP);
 
-        add(proizvodnja);
-        add(ime);
-
+        add(lastEdit);
+        add(createdBy);
     }
 }

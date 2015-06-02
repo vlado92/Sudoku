@@ -14,12 +14,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.QUESTION_MESSAGE;
-import static javax.swing.JOptionPane.YES_NO_OPTION;
 import javax.swing.JTextField;
 
 public class HighScore extends JFrame {
@@ -27,18 +24,18 @@ public class HighScore extends JFrame {
     private static JLabel[] playerName = new JLabel[11];
     private static JLabel[] position = new JLabel[11];
     private static JLabel[] playerTime = new JLabel[11];
-    private static long[] time = new long[11];
+    private static int[] time = new int[11];
     private static ArrayList<String> scoreTracker = new ArrayList<>();
     private static String dificultyString;
 
     public HighScore(String tesko) throws HeadlessException {
-        this.setTitle("High Score!");
+        this.setTitle("High Score " + tesko);
         this.setSize(350, 350);
         dificultyString = tesko;
         for (int i = 0; i < 11; i++) {
             playerName[i] = new JLabel();
             playerTime[i] = new JLabel();
-            position[i] = new JLabel();
+            position[i] = new JLabel(""+(i+1));
         }
 
         readTextFileLineByLine();
@@ -57,21 +54,19 @@ public class HighScore extends JFrame {
         position[10].setVisible(false);
     }
 
-    public void setScore(long Score) {
-        Calendar timeOnScore = Calendar.getInstance();
-        Calendar timeOfPlayer = Calendar.getInstance();
+    public void setScore(final int score) {
+        readTextFileLineByLine();
         for (int i = 0; i < 10; i++) {
-            timeOfPlayer.setTimeInMillis(Score);
-            timeOnScore.setTimeInMillis(time[i]);
-            final long score = Score;
-            if (timeOfPlayer.before(timeOnScore)) {
-                for (int k = 9; k >= i; k--) {
-                    playerName[k + 1].setText(playerName[k].getText());
-                    playerTime[k + 1].setText(playerTime[k].getText());
+            if (score < time[i]) {
+                System.out.println("uslo u petlju u " + i + " koraku");
+                for (int k = 9; k > i; k--) {
+                    playerName[k].setText(playerName[k-1].getText());
+                    playerTime[k].setText(playerTime[k-1].getText());
+                    scoreTracker.set(k, scoreTracker.get(k-1));
                 }
-                playerTime[i].setText(convertTimeFromLongToString(timeOfPlayer));
+                playerTime[i].setText(convertTimeFromIntToString(score));
                 final JTextField nameInput = new JTextField();
-                nameInput.setBounds(40, i * 20, 160, (i + 1) * 20);
+                nameInput.setBounds(40, i * 20, 160,  (i+1)* 20);
                 nameInput.setVisible(true);
                 nameInput.setEnabled(true);
                 add(nameInput);
@@ -92,28 +87,25 @@ public class HighScore extends JFrame {
                             nameInput.setText(null);
                             playerName[index].setVisible(true);
 
-                            String nameToPut = "" + (index) + "-" + playerName[index].getText() + "." + score;
+                            String nameToPut = playerName[index].getText() + "." + score;
                             writeTextFileLineByLine(nameToPut, index);
                         }
+                        e.getKeyChar(); 
                     }
 
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                    }
-
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                    }
+                    @Override public void keyPressed(KeyEvent e) {}
+                    @Override public void keyReleased(KeyEvent e) {}
                 });
 
                 break;
             }
         }
     }; 
-    public static String convertTimeFromLongToString(Calendar time) {
-        return ((time.get(Calendar.HOUR) < 10) ? ("0" + (time.get(Calendar.HOUR_OF_DAY) - 1)) : ("" + time.get(Calendar.HOUR_OF_DAY)))
-                + ":" + ((time.get(Calendar.MINUTE) < 10) ? ("0" + time.get(Calendar.MINUTE)) : ("" + time.get(Calendar.MINUTE)))
-                + ":" + ((time.get(Calendar.SECOND) < 10) ? ("0" + time.get(Calendar.SECOND)) : ("" + time.get(Calendar.SECOND)));
+    public static String convertTimeFromIntToString(int time) {
+        int seconds = time%60;
+        int minutes = time/60;
+        return ((minutes > 10) ? (""+minutes) : ("0"+minutes)) + ":"
+                + ((seconds > 10) ? (""+seconds) : ("0"+seconds));
 
     };
     
@@ -138,16 +130,29 @@ public class HighScore extends JFrame {
             String milis;
             for (int i = 0; i < scoreTracker.size(); i++) {
                 oznakaSubstringa = scoreTracker.get(i).indexOf('.');
-                playerName[i].setText(scoreTracker.get(i).substring(2, oznakaSubstringa));
-                position[i].setText("" + (i + 1));
+                playerName[i].setText(scoreTracker.get(i).substring(0, oznakaSubstringa));
                 oznakaSubstringa = scoreTracker.get(i).indexOf('.') + 1;
                 milis = scoreTracker.get(i).substring(oznakaSubstringa);
-                Calendar konvertor = Calendar.getInstance();
-                time[i] = Long.parseLong(milis);
-                konvertor.setTimeInMillis(time[i]);
-                playerTime[i].setText(convertTimeFromLongToString(konvertor));
+                if(milis.equals("N/a"))
+                {
+                    playerTime[i].setText("N/a");
+                    playerName[i].setText("N/a");
+                    
+                    playerTime[i].setVisible(false);
+                    playerName[i].setVisible(false);
+                }
+                else
+                {   
+                    time[i] = Integer.parseInt(milis);
+                    if(time[i] != 9999)
+                        playerTime[i].setText(convertTimeFromIntToString(time[i]));
+                    else
+                    {
+                        playerTime[i].setVisible(false);
+                        playerName[i].setVisible(false);
+                    }
+                }
             }
-
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
         } finally {

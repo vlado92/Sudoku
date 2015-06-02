@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import static java.lang.Math.sqrt;
-import java.util.Calendar;
 import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -28,6 +27,12 @@ public class Buttons extends JPanel implements ActionListener {
     private static JLabel stateOfGame = new JLabel();
     private JTextField inputField;
     private final int[][] intSudoku = new int[sudokuSize][sudokuSize];
+    private boolean finished;
+    public static String difString;
+
+    public boolean isFisnished() {
+        return finished;
+    }
     
     public static JLabel getStateOfGame() {
         return stateOfGame;
@@ -41,6 +46,8 @@ public class Buttons extends JPanel implements ActionListener {
 
     public Buttons(String tezinaString, int tezinaInt) {    
         makingSudoku();
+        difString = tezinaString;
+        finished = false;
         generateButtons();
         deletingNumbersInSudoku(tezinaInt);
         IsFinished(tezinaString);
@@ -51,11 +58,10 @@ public class Buttons extends JPanel implements ActionListener {
         int height = Frame.getVisina();
         setPreferredSize(new Dimension(width, height));
         setLayout(null);
-        setBackground(Color.white);
         for (int i = 0; i < sudokuSize; i++) {
             for (int j = 0; j < sudokuSize; j++) {
-                Sudoku[i][j] = new JButton(""+((intSudoku[i][j] != 0) 
-                        ? (intSudoku[i][j]): (" ")));
+                Sudoku[i][j] = new JButton(""+
+                        ((intSudoku[i][j] != 0) ? (intSudoku[i][j]) : (" ")));
                 Sudoku[i][j].setFont(font);
                 Sudoku[i][j].setBounds((Frame.getDuzina()) / sudokuSize * j + 3, 
                         (Frame.getVisina()) / sudokuSize * i + 3, 
@@ -164,10 +170,8 @@ public class Buttons extends JPanel implements ActionListener {
         }
         if (flag == 0) {
             stateOfGame.setText("Game Over");
-            long timeInMillis = Calendar.getInstance().getTimeInMillis() - DifficultyLevel.startTime.getTimeInMillis();
-            HighScore novi = new HighScore(dificultyString);
-            novi.setVisible(true);
-            novi.setScore(timeInMillis);
+            finished = true;
+            DifficultyLevel.setButtonFinished(finished);
         } else if (flag == 1) {
             stateOfGame.setText("Still playing!");
         } else {
@@ -187,7 +191,6 @@ public class Buttons extends JPanel implements ActionListener {
         }
     }
     private void makingSudoku() {
-        
         System.out.println("fazu pravljenja proslo");
         IntSudokuGenerator generator = new IntSudokuGenerator(intSudoku);
     }
@@ -227,12 +230,14 @@ public class Buttons extends JPanel implements ActionListener {
             inputField = new JTextField();
             inputField.setBounds(Sudoku[i][j].getBounds());
             Sudoku[i][j].setText(" ");
+            intSudoku[i][j] = 0;
             inputField.setText("");
             inputField.setVisible(true);
             inputField.setEnabled(true);
             inputField.setFont(font);
             Sudoku[i][j].setVisible(false);
             add(inputField);
+            inputField.grabFocus();
             inputField.setHorizontalAlignment(JTextField.CENTER);
             final int prvi = i;
             final int drugi = j;
