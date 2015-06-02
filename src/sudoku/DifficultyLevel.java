@@ -5,6 +5,9 @@
  */
 package sudoku;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Username
@@ -13,10 +16,14 @@ public class DifficultyLevel extends javax.swing.JFrame {
 
     private static String dificultyString;
     private static Frame frame;
-    private static boolean visible = true;
     private Buttons button;
     private static boolean buttonFinished = false;
+    private static int sizeOf;
 
+    public static int getSizeOf() {
+        return sizeOf;
+    }
+    
     public static boolean isButtonFinished() {
         return buttonFinished;
     }
@@ -25,10 +32,6 @@ public class DifficultyLevel extends javax.swing.JFrame {
         DifficultyLevel.buttonFinished = buttonFinished;
     }
     
-    public static boolean getVisible() {
-        return visible;
-    }
-
     public static String getDificultyString() {
         return dificultyString;
     }
@@ -36,6 +39,7 @@ public class DifficultyLevel extends javax.swing.JFrame {
     public DifficultyLevel(final Frame neki) {
         this.setAlwaysOnTop(true);
         frame = neki;
+        frame.setEnabled(false);
         neki.setFocusable(false);
         initComponents();
     }
@@ -48,8 +52,17 @@ public class DifficultyLevel extends javax.swing.JFrame {
         Test = new javax.swing.JButton();
         Medium = new javax.swing.JButton();
         Hard = new javax.swing.JButton();
+        velicina2 = new javax.swing.JCheckBox();
+        velicina3 = new javax.swing.JCheckBox();
+        velicina4 = new javax.swing.JCheckBox();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         Easy.setText("Easy");
         Easy.addActionListener(new java.awt.event.ActionListener() {
@@ -79,6 +92,27 @@ public class DifficultyLevel extends javax.swing.JFrame {
             }
         });
 
+        velicina2.setText("4x4");
+        velicina2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                velicina2ActionPerformed(evt);
+            }
+        });
+
+        velicina3.setText("9x9");
+        velicina3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                velicina3ActionPerformed(evt);
+            }
+        });
+
+        velicina4.setText("16x16");
+        velicina4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                velicina4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -90,87 +124,167 @@ public class DifficultyLevel extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Medium, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Test, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(Test, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(velicina2)
+                    .addComponent(velicina3)
+                    .addComponent(velicina4)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Easy, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Medium, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(Easy, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Medium, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(velicina2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(velicina3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Test, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Hard, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(Test, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Hard, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(velicina4)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void EasyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EasyActionPerformed
-            frame.dispose();
-            frame = new Frame();
-            frame.setVisible(true);
-            button = new Buttons("Lako", 60);
-            button.setVisible(true);
-            frame.add(button);
-            frame.pack();
-            this.setVisible(false);
-            frame.setVisible(true);
-            visible = false;
-            buttonFinished = button.isFisnished();
-            frame.timer.start();
+            if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected()))
+            {
+                this.toBack();
+                JOptionPane.showMessageDialog(new JFrame(), "Select sudoku size",
+                "Warning", 0);
+                frame.setEnabled(false);
+                this.toFront();
+            }
+            else
+            {
+                frame.dispose();
+                frame = new Frame();
+                frame.setVisible(true);
+                button = new Buttons("Lako"+((int) Math.sqrt(getSizeOf())), (int) ((sizeOf*sizeOf)/2));
+                button.setVisible(true);
+                frame.add(button);
+                frame.pack();
+                this.dispose();
+                buttonFinished = button.isFisnished();
+                frame.timer.start();
+            }
     }//GEN-LAST:event_EasyActionPerformed
 
     private void MediumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MediumActionPerformed
-        frame.dispose();
-        frame = new Frame();
-        frame.setVisible(true);
-        button = new Buttons("Srednje", 60);
-        button.setVisible(true);
-        frame.add(button);
-        frame.pack();
-        this.setVisible(false);
-        frame.setVisible(true);
-        visible = false;
-        buttonFinished = button.isFisnished();
-        frame.timer.start();
+        if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected()))
+            {
+                this.toBack();
+                JOptionPane.showMessageDialog(new JFrame(), "Select sudoku size",
+                "Warning", 0);
+            }
+            else
+            {
+                frame.dispose();
+                frame = new Frame();
+                frame.setVisible(true);
+                button = new Buttons("Srednje"+((int) Math.sqrt(getSizeOf())),(int) (sizeOf*sizeOf)*2/3);
+                button.setVisible(true);
+                frame.add(button);
+                frame.pack();
+                this.dispose();
+                frame.setVisible(true);
+                buttonFinished = button.isFisnished();
+                frame.timer.restart();
+                frame.setSeconds(0);
+            }
     }//GEN-LAST:event_MediumActionPerformed
 
     private void TestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TestActionPerformed
-        frame.dispose();
-        frame = new Frame();
-        frame.setVisible(true);
-        button = new Buttons("Test", 5);
-        button.setVisible(true);
-        frame.add(button);
-        frame.pack();
-        this.setVisible(false);
-        frame.setVisible(true);
-        visible = false;
-        buttonFinished = button.isFisnished();
-        frame.timer.start();
+        if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected()))
+            {
+                this.toBack();
+                JOptionPane.showMessageDialog(new JFrame(), "Select sudoku size",
+                "Warning", 0);
+            }
+            else
+            {
+                frame.dispose();
+                frame = new Frame();
+                frame.setVisible(true);
+                button = new Buttons("Test"+((int) Math.sqrt(getSizeOf())), 0);
+                button.setVisible(true);
+                frame.add(button);
+                frame.pack();
+                this.dispose();
+                buttonFinished = button.isFisnished();
+                frame.timer.start();
+            }
     }//GEN-LAST:event_TestActionPerformed
 
     private void HardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HardActionPerformed
-        frame.dispose();
-        frame = new Frame();
-        frame.setVisible(true);
-        button = new Buttons("Tesko", 60);
-        button.setVisible(true);
-        frame.add(button);
-        frame.pack();
-        this.setVisible(false);
-        frame.setVisible(true);
-        visible = false;
-        buttonFinished = button.isFisnished();
-        frame.timer.start();
+        if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected()))
+            {
+                this.toBack();
+                JOptionPane.showMessageDialog(new JFrame(), "Select sudoku size",
+                "Warning", 0);
+            }
+            else
+            {
+                frame.dispose();
+                frame = new Frame();
+                frame.setVisible(true);
+                button = new Buttons("Tesko"+((int) Math.sqrt(getSizeOf())),(int) (sizeOf*sizeOf)*3/4);
+                button.setVisible(true);
+                frame.add(button);
+                frame.pack();
+                this.dispose();
+                buttonFinished = button.isFisnished();
+                frame.timer.start();
+            }
     }//GEN-LAST:event_HardActionPerformed
+
+    private void velicina2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velicina2ActionPerformed
+        if(velicina3.isSelected())
+            velicina3.setSelected(false);
+        else if(velicina4.isSelected())
+            velicina4.setSelected(false);
+        sizeOf = 4;
+        System.out.println(sizeOf);
+    }//GEN-LAST:event_velicina2ActionPerformed
+
+    private void velicina3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velicina3ActionPerformed
+        if(velicina2.isSelected())
+            velicina2.setSelected(false);
+        else if(velicina4.isSelected())
+            velicina4.setSelected(false);
+        sizeOf = 9;
+        
+        System.out.println(sizeOf);
+    }//GEN-LAST:event_velicina3ActionPerformed
+
+    private void velicina4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velicina4ActionPerformed
+        if(velicina3.isSelected())
+            velicina3.setSelected(false);
+        else if(velicina2.isSelected())
+            velicina2.setSelected(false);
+        sizeOf = 16;
+        System.out.println(sizeOf);
+    }//GEN-LAST:event_velicina4ActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        frame.setEnabled(true);
+        frame.toFront();
+    }//GEN-LAST:event_formWindowClosed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Easy;
     private javax.swing.JButton Hard;
     private javax.swing.JButton Medium;
     private javax.swing.JButton Test;
+    private javax.swing.JCheckBox velicina2;
+    private javax.swing.JCheckBox velicina3;
+    private javax.swing.JCheckBox velicina4;
     // End of variables declaration//GEN-END:variables
 }

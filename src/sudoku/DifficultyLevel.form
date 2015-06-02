@@ -2,12 +2,16 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="windowClosed" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosed"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -33,20 +37,36 @@
                   <Component id="Medium" max="32767" attributes="0"/>
                   <Component id="Test" max="32767" attributes="0"/>
               </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="velicina2" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="velicina3" min="-2" max="-2" attributes="0"/>
+                  <Component id="velicina4" min="-2" max="-2" attributes="0"/>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="Easy" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                  <Component id="Medium" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="Easy" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                      <Component id="Medium" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="velicina2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="velicina3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="Test" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                  <Component id="Hard" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="Test" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                      <Component id="Hard" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="velicina4" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -83,6 +103,30 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="HardActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="velicina2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="4x4"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="velicina2ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="velicina3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="9x9"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="velicina3ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="velicina4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="16x16"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="velicina4ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

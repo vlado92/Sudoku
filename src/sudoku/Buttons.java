@@ -9,10 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import static java.lang.Math.sqrt;
 import java.util.Random;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Buttons extends JPanel implements ActionListener {
@@ -20,31 +21,37 @@ public class Buttons extends JPanel implements ActionListener {
     private int index1;
     private int index2;
     private Random randomNumber = new Random();
-    private static final int sudokuSize = 9;
-    private static final int sqrtOfSize = (int) sqrt(sudokuSize);
-    private final JButton[][] Sudoku = new JButton[sudokuSize][sudokuSize];
-    private final Font font = new Font("Arial", Font.PLAIN, 15);
+    private static int sudokuSize;
+    private static int blockSize;
+    private JButton[][] Sudoku;
+    private Font font;
     private static JLabel stateOfGame = new JLabel();
     private JTextField inputField;
-    private final int[][] intSudoku = new int[sudokuSize][sudokuSize];
+    private int[][] intSudoku;
     private boolean finished;
     public static String difString;
 
     public boolean isFisnished() {
         return finished;
     }
-    
+
     public static JLabel getStateOfGame() {
         return stateOfGame;
     }
+
     public static int getSudokuSize() {
         return sudokuSize;
     }
+
+    public static void setSudokuSize(int sudokuSize) {
+        Buttons.sudokuSize = sudokuSize;
+    }
+    
     public static int getSqrtOfSudokuSize() {
-        return sqrtOfSize;
+        return blockSize;
     }
 
-    public Buttons(String tezinaString, int tezinaInt) {    
+    public Buttons(String tezinaString, int tezinaInt) {
         makingSudoku();
         difString = tezinaString;
         finished = false;
@@ -53,36 +60,37 @@ public class Buttons extends JPanel implements ActionListener {
         IsFinished(tezinaString);
     }
 
-    private void generateButtons(){
+    private void generateButtons() {
         int width = Frame.getDuzina();
         int height = Frame.getVisina();
         setPreferredSize(new Dimension(width, height));
         setLayout(null);
         for (int i = 0; i < sudokuSize; i++) {
             for (int j = 0; j < sudokuSize; j++) {
-                Sudoku[i][j] = new JButton(""+
-                        ((intSudoku[i][j] != 0) ? (intSudoku[i][j]) : (" ")));
+                Sudoku[i][j] = new JButton(""
+                        + ((intSudoku[i][j] != 0) ? (intSudoku[i][j]) : (" ")));
                 Sudoku[i][j].setFont(font);
-                Sudoku[i][j].setBounds((Frame.getDuzina()) / sudokuSize * j + 3, 
-                        (Frame.getVisina()) / sudokuSize * i + 3, 
-                        Frame.getDuzina() / sudokuSize - 3, 
-                        (Frame.getVisina()) / sudokuSize - 3);
+                Sudoku[i][j].setBounds((Frame.getDuzina()) / (sudokuSize) * j + (6 - blockSize),
+                        (Frame.getVisina()) / (sudokuSize) * i + (6 - blockSize),
+                        Frame.getDuzina() / (sudokuSize) - (6 - blockSize),
+                        (Frame.getVisina()) / (sudokuSize) - (6 - blockSize));
                 Sudoku[i][j].setVisible(true);
                 Sudoku[i][j].setEnabled(false);
                 Sudoku[i][j].setFocusable(false);
                 Sudoku[i][j].addActionListener(this);
-                Sudoku[i][j].setName(""+i+" "+j);
+                Sudoku[i][j].setName("" + i + " " + j);
                 add(Sudoku[i][j]);
             }
         }
     }
+
     private void deletingNumbersInSudoku(int deleteCounter) {
         int[][] deletedNumbers = new int[deleteCounter][2];
         int flag, i = 0;
         for (; deleteCounter > 0;) {
             flag = 2;
-            index1 = randomNumber.nextInt(9);
-            index2 = randomNumber.nextInt(9);
+            index1 = randomNumber.nextInt(sudokuSize);
+            index2 = randomNumber.nextInt(sudokuSize);
             deletedNumbers[i][0] = index1;
             deletedNumbers[i][1] = index2;
             if (i >= 1) {
@@ -112,22 +120,25 @@ public class Buttons extends JPanel implements ActionListener {
             }
         }
     }
+
     private int IsValidNumber(int rows, int columns, int number) {
-        int[] column = new int[9];
-        int[] row = new int[9];
-        int[] cube = new int[9];
+        int[] column = new int[sudokuSize];
+        int[] row = new int[sudokuSize];
+        int[] cube = new int[sudokuSize];
         int rowFlag = 2, columnFlag = 2, cubeFlag = 0, cubeIndex = 0;
         System.out.println(columns + " " + rows);
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < sudokuSize; i++) {
             column[i] = intSudoku[i][columns];
             row[i] = intSudoku[rows][i];
         }
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                cube[cubeIndex++] = intSudoku[i + 3 * ((int) rows / 3)][j + 3 * ((int) columns / 3)];
+        for (int i = 0; i < blockSize; i++) {
+            for (int j = 0; j < blockSize; j++) {
+                cube[cubeIndex++] = intSudoku
+                [i + blockSize * ((int) rows / blockSize)]
+                [j + blockSize * ((int) columns / blockSize)];
             }
         }
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < sudokuSize; i++) {
             if (row[i] == number) {
                 rowFlag = 1;
                 break;
@@ -135,7 +146,7 @@ public class Buttons extends JPanel implements ActionListener {
                 rowFlag = 0;
             }
         }
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < sudokuSize; i++) {
             if (column[i] == number) {
                 columnFlag = 1;
                 break;
@@ -143,7 +154,7 @@ public class Buttons extends JPanel implements ActionListener {
                 columnFlag = 0;
             }
         }
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < sudokuSize; i++) {
             if (cube[i] == number) {
                 cubeFlag = 1;
                 break;
@@ -156,6 +167,7 @@ public class Buttons extends JPanel implements ActionListener {
         }
         return 0;
     }
+
     private void IsFinished(String dificultyString) {
         int flag = 2;
         for (int i = 0; i < sudokuSize; i++) {
@@ -178,9 +190,10 @@ public class Buttons extends JPanel implements ActionListener {
             stateOfGame.setText("ERROR");
         }
     }
+
     private void ispis() {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < sudokuSize; i++) {
+            for (int j = 0; j < sudokuSize; j++) {
                 if (Sudoku[i][j].getText() == " ") {
                     System.out.print("? ");
                 } else {
@@ -190,30 +203,54 @@ public class Buttons extends JPanel implements ActionListener {
             System.out.println();
         }
     }
+
     private void makingSudoku() {
-        System.out.println("fazu pravljenja proslo");
+        sudokuSize = DifficultyLevel.getSizeOf();
+        blockSize = (int) Math.sqrt(sudokuSize);
+        font  = new Font("Arial", Font.PLAIN, 28 -sudokuSize);
+        Sudoku =  new JButton[sudokuSize][sudokuSize];
+        intSudoku = new int[sudokuSize][sudokuSize];
+        
+        System.out.println(intSudoku.length);
         IntSudokuGenerator generator = new IntSudokuGenerator(intSudoku);
+        
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        for (int i = 0; i < sqrtOfSize; i++) {
-            for (int j = 0; j < sqrtOfSize; j++) {
-                g.drawRect(i * Frame.getDuzina() / (sqrtOfSize) + 2, j * (Frame.getVisina()) / sqrtOfSize + 2, Frame.getDuzina() / sqrtOfSize - 2, (Frame.getVisina()) / sqrtOfSize - 2);
+        for(int i=0; i<blockSize; i++)
+            for(int j=0; j<blockSize; j++){
+                g.drawLine(blockSize*i*((int) Sudoku[0][0].getBounds().getMaxX()),
+                           blockSize*j*((int) Sudoku[0][0].getBounds().getMaxY()),
+                           blockSize*i*((int) Sudoku[0][0].getBounds().getMaxX()),
+                           Frame.getVisina());
+                g.drawLine(blockSize*i*((int) Sudoku[0][0].getBounds().getMaxX()),
+                           blockSize*j*((int) Sudoku[0][0].getBounds().getMaxY()),
+                           Frame.getDuzina(),
+                           blockSize*j*((int) Sudoku[0][0].getBounds().getMaxY()));
+                
+                g.drawLine(blockSize*(i+1)*((int) Sudoku[0][0].getBounds().getMaxX())+(5 - blockSize),
+                           blockSize*j*((int) Sudoku[0][0].getBounds().getMaxY()),
+                           blockSize*(i+1)*((int) Sudoku[0][0].getBounds().getMaxX())+(5 - blockSize),
+                           Frame.getVisina());
+                g.drawLine(blockSize*i*((int) Sudoku[0][0].getBounds().getMaxX()),
+                           blockSize*(j+1)*((int) Sudoku[0][0].getBounds().getMaxY())+(5 - blockSize),
+                           Frame.getDuzina(),
+                           blockSize*(j+1)*((int) Sudoku[0][0].getBounds().getMaxY())+(5 - blockSize));
             }
-        }
     }
 
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.toString().charAt(e.toString().length()-1));
-        System.out.println(e.toString().charAt(e.toString().length()-3));
-        int i = Integer.parseInt(""+e.toString().charAt(e.toString().length()-3));
-        int j = Integer.parseInt(""+e.toString().charAt(e.toString().length()-1));
+        int i, j;
+        int substringIndex = e.toString().indexOf(" on ");
+        String subString = e.toString().substring(substringIndex + 4);
+        i = Integer.parseInt(subString.substring(0, subString.indexOf(" ")));
+        j = Integer.parseInt(subString.substring(subString.indexOf(" ")+1));
+        
         if (Sudoku[i][j].isEnabled() == false) {
             System.out.println("nije moguce");
-        } 
-        else {
+        } else {
             JButton example = new JButton();
             example.setEnabled(true);
             for (int k = 0; k < sudokuSize; k++) {
@@ -226,7 +263,7 @@ public class Buttons extends JPanel implements ActionListener {
                     }
                 }
             }
-            System.out.println("MOGUCE");
+            
             inputField = new JTextField();
             inputField.setBounds(Sudoku[i][j].getBounds());
             Sudoku[i][j].setText(" ");
@@ -241,34 +278,80 @@ public class Buttons extends JPanel implements ActionListener {
             inputField.setHorizontalAlignment(JTextField.CENTER);
             final int prvi = i;
             final int drugi = j;
-            KeyListener keyListener = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() <= '9' && e.getKeyChar() >= '1') {
-                System.out.println(e.getKeyChar());
-                if (IsValidNumber(prvi, drugi, e.getKeyChar() - '0') == 1) {
-                    intSudoku[prvi][drugi] = e.getKeyChar() - '0';
-                    Sudoku[prvi][drugi].setText(""+intSudoku[prvi][drugi]);
-                    inputField.setVisible(false);
-                    Sudoku[prvi][drugi].setVisible(true);
-                    ispis();
-                    IsFinished(DifficultyLevel.getDificultyString());
-                } 
-                else {
-                    inputField.setVisible(false);
-                    Sudoku[prvi][drugi].setVisible(true);
-                    Sudoku[prvi][drugi].setBackground(Color.red);
+            KeyListener keyListener;
+            keyListener = new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent e) {
+                    if(sudokuSize<10)
+                    {
+                        if (e.getKeyChar() <= '9' && e.getKeyChar() >= '1') {
+                            if (IsValidNumber(prvi, drugi, e.getKeyChar() - '0') == 1) {
+                                intSudoku[prvi][drugi] = e.getKeyChar() - '0';
+                                Sudoku[prvi][drugi].setText("" + intSudoku[prvi][drugi]);
+                                inputField.setVisible(false);
+                                Sudoku[prvi][drugi].setVisible(true);
+                                ispis();
+                                IsFinished(DifficultyLevel.getDificultyString());
+                            } else {
+                                inputField.setVisible(false);
+                                Sudoku[prvi][drugi].setVisible(true);
+                                Sudoku[prvi][drugi].setBackground(Color.red);
+                            }
+                        } else {
+                            e.consume();
+                            inputField.setText("");
+                        }
                     }
-                } 
-            else{
-                e.consume();
-                inputField.setText("");
-                } 
-            }
-            @Override public void keyPressed(KeyEvent e) {}
-            @Override public void keyReleased(KeyEvent e) {}
-                };
+                    else
+                        JOptionPane.showMessageDialog(new JFrame(), "NOT YET SUPPORTED",
+                "Warning", 0);
+//                    else{
+//                        if(e.getKeyChar()<'0' || e.getKeyChar()>'9')
+//                            inputField.setText("NN");
+//                            if (e.getKeyChar() <= '9' && e.getKeyChar() >= '0') {
+//                                if (IsValidNumber(prvi, drugi, e.getKeyChar() - '0') == 1) {
+//                                intSudoku[prvi][drugi] = e.getKeyChar() - '0';
+//                                Sudoku[prvi][drugi].setText("" + intSudoku[prvi][drugi]);
+//                                inputField.setVisible(false);
+//                                Sudoku[prvi][drugi].setVisible(true);
+//                                ispis();
+//                                IsFinished(DifficultyLevel.getDificultyString());
+//                            } else {
+//                                inputField.setVisible(false);
+//                                Sudoku[prvi][drugi].setVisible(true);
+//                                Sudoku[prvi][drugi].setBackground(Color.red);
+//                            }
+//                        } else if(e.getKeyChar() == '1'){
+//                            inputField.setText("1");
+//                            if(e.getKeyChar()<='6' && e.getKeyChar() >='0'){
+//                                inputField.setText("1"+e.getKeyChar());
+//                                if (IsValidNumber(prvi, drugi, Integer.parseInt(inputField.getText())) == 1) {
+//                                    intSudoku[prvi][drugi] = Integer.parseInt(inputField.getText());
+//                                    Sudoku[prvi][drugi].setText("" + intSudoku[prvi][drugi]);
+//                                    inputField.setVisible(false);
+//                                    Sudoku[prvi][drugi].setVisible(true);
+//                                    ispis();
+//                                    IsFinished(DifficultyLevel.getDificultyString());
+//                                }else {
+//                                    inputField.setVisible(false);
+//                                    Sudoku[prvi][drugi].setVisible(true);
+//                                    Sudoku[prvi][drugi].setBackground(Color.red);
+//                                }
+//                            }
+//                            else{
+//                                e.consume();
+//                                inputField.setText("");
+//                            }    
+//                        } else {
+//                            e.consume();
+//                            inputField.setText("");
+//                        }
+//                    }
+                }
+                @Override public void keyPressed(KeyEvent e) {}
+                @Override public void keyReleased(KeyEvent e) {}
+            };
             inputField.addKeyListener(keyListener);
-        }        
+        }
     }
 }

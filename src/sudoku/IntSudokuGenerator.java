@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class IntSudokuGenerator {
   
-    static int N = Buttons.getSudokuSize();
-    static int grid[][] = new int[N][N];
+    static int N;
+    static int grid[][];
      
     static class Cell {
 
@@ -35,13 +35,13 @@ public class IntSudokuGenerator {
   }
 
   // if v present row, return false
-  for (int c = 0; c < 9; c++) {
+  for (int c = 0; c < N; c++) {
    if (grid[cell.row][c] == value)
     return false;
   }
 
   // if v present in col, return false
-  for (int r = 0; r < 9; r++) {
+  for (int r = 0; r < N; r++) {
    if (grid[r][cell.col] == value)
     return false;
   }
@@ -49,10 +49,10 @@ public class IntSudokuGenerator {
   // if v present in grid, return false
 
   // to get the grid we should calculate (x1,y1) (x2,y2)
-  int x1 = 3 * (cell.row / 3);
-  int y1 = 3 * (cell.col / 3);
-  int x2 = x1 + 2;
-  int y2 = y1 + 2;
+  int x1 = Buttons.getSqrtOfSudokuSize() * (cell.row / Buttons.getSqrtOfSudokuSize());
+  int y1 = Buttons.getSqrtOfSudokuSize() * (cell.col / Buttons.getSqrtOfSudokuSize());
+  int x2 = x1 + Buttons.getSqrtOfSudokuSize()-1;
+  int y2 = y1 + Buttons.getSqrtOfSudokuSize()-1;
 
   for (int x = x1; x <= x2; x++)
    for (int y = y1; y <= y2; y++)
@@ -75,14 +75,14 @@ public class IntSudokuGenerator {
 
   // if col > 8, then col = 0, row++
   // reached end of row, got to next row
-  if (col > 8) {
+  if (col > Buttons.getSudokuSize()-1) {
    // goto next line
    col = 0;
    row++;
   }
 
   // reached end of matrix, return null
-  if (row > 8)
+  if (row > Buttons.getSudokuSize()-1)
    return null; // reached end
 
   Cell next = new Cell(row, col);
@@ -112,7 +112,7 @@ public class IntSudokuGenerator {
   
   // if grid[cur] doesn't have a value
   // try each possible value
-  for (int i = 1; i <= 9; i++) {
+  for (int i = 1; i <= N; i++) {
    // check if valid, if valid, then update
    boolean valid = isValid(cur, i);
 
@@ -139,9 +139,11 @@ public class IntSudokuGenerator {
 
     public IntSudokuGenerator(int imported[][]) {
         Random rand = new Random();
-        int broj1 = rand.nextInt(N);
-        int broj2 = rand.nextInt(N)+broj1;
-        int broj3 = rand.nextInt(N)+broj1 + broj2;
+        N = imported.length;
+        grid =  new int[N][N];
+        int broj1 = 4;
+        int broj2 = 7;
+        int broj3 = 6;
         for(int i=0; i<N; i++)
             for(int j=0; j<N; j++)
                 grid[i][j] = 0;
@@ -153,7 +155,7 @@ public class IntSudokuGenerator {
             System.out.println("SUDOKU cannot be solved.");
             return;
         }
-    System.out.println("SOLUTION\n");
+    System.out.println(" SOLUTION\n");
     printGrid(grid);
     for (int i = 0; i < N; i++) 
         for (int j = 0; j < N; j++)
@@ -164,11 +166,11 @@ public class IntSudokuGenerator {
  static void printGrid(int grid[][]) {
      
   for (int row = 0; row < N; row++) {
-        if(row%3==0)
+        if(row%Buttons.getSqrtOfSudokuSize()==0)
             System.out.println();
     for (int col = 0; col < N; col++)
     {
-       if(col%3==0)
+       if(col%Buttons.getSqrtOfSudokuSize()==0)
            System.out.print("\t");
        System.out.print(grid[row][col]+" ");
    }

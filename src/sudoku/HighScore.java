@@ -104,8 +104,8 @@ public class HighScore extends JFrame {
     public static String convertTimeFromIntToString(int time) {
         int seconds = time%60;
         int minutes = time/60;
-        return ((minutes > 10) ? (""+minutes) : ("0"+minutes)) + ":"
-                + ((seconds > 10) ? (""+seconds) : ("0"+seconds));
+        return ((minutes >= 10) ? (""+minutes) : ("0"+minutes)) + ":"
+                + ((seconds >= 10) ? (""+seconds) : ("0"+seconds));
 
     };
     
