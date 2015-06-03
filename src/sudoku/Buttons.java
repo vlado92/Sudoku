@@ -11,9 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Buttons extends JPanel implements ActionListener {
@@ -30,7 +28,10 @@ public class Buttons extends JPanel implements ActionListener {
     private int[][] intSudoku;
     private boolean finished;
     public static String difString;
-
+    static int inputCounter = 0;
+    static int number;
+    static int maximum;
+                      
     public boolean isFisnished() {
         return finished;
     }
@@ -57,7 +58,6 @@ public class Buttons extends JPanel implements ActionListener {
         finished = false;
         generateButtons();
         deletingNumbersInSudoku(tezinaInt);
-        IsFinished(tezinaString);
     }
 
     private void generateButtons() {
@@ -263,7 +263,6 @@ public class Buttons extends JPanel implements ActionListener {
                     }
                 }
             }
-            
             inputField = new JTextField();
             inputField.setBounds(Sudoku[i][j].getBounds());
             Sudoku[i][j].setText(" ");
@@ -278,76 +277,72 @@ public class Buttons extends JPanel implements ActionListener {
             inputField.setHorizontalAlignment(JTextField.CENTER);
             final int prvi = i;
             final int drugi = j;
+            number = maximum = 0;
+            int temp = sudokuSize;
+            while(temp>0)
+            {
+                maximum++;
+                temp/=10;
+            }
             KeyListener keyListener;
             keyListener = new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent e) {
-                    if(sudokuSize<10)
-                    {
-                        if (e.getKeyChar() <= '9' && e.getKeyChar() >= '1') {
-                            if (IsValidNumber(prvi, drugi, e.getKeyChar() - '0') == 1) {
-                                intSudoku[prvi][drugi] = e.getKeyChar() - '0';
+                    if (e.getKeyChar() <= '9' && e.getKeyChar() >= '0') {
+                        inputCounter++;
+                    }else if(e.getKeyChar() == 10) {
+                        if(inputCounter == 0){
+                            e.consume();
+                        }else{
+                            int broj = Integer.parseInt(inputField.getText());
+                            inputCounter = 0;
+                            if(broj>0 && broj < 17){
+                                if (IsValidNumber(prvi, drugi, broj) == 1) {
+                                    intSudoku[prvi][drugi] = broj;
+                                    Sudoku[prvi][drugi].setText("" + intSudoku[prvi][drugi]);
+                                    inputField.setVisible(false);
+                                    Sudoku[prvi][drugi].setVisible(true);
+                                    ispis();
+                                    IsFinished(DifficultyLevel.getDificultyString());
+                                } else {
+                                    inputField.setVisible(false);
+                                    Sudoku[prvi][drugi].setVisible(true);
+                                    Sudoku[prvi][drugi].setBackground(Color.red);
+                            }
+                            }else{
+                                inputField.setVisible(false);
+                                Sudoku[prvi][drugi].setVisible(true);
+                                Sudoku[prvi][drugi].setBackground(Color.green);
+                            }
+                        }
+                    }else{
+                        e.consume();
+                    }
+                    System.out.println("INPUT COUNTER = "+inputCounter);
+                    number = (int) (number*Math.pow(10, inputCounter - 1) + e.getKeyChar() - '0');
+                    System.out.println("INPUT FIELD = "+number);
+                    if(inputCounter == maximum){
+                        inputCounter = 0;
+                        if(number > 0 && number <= sudokuSize){
+                            if (IsValidNumber(prvi, drugi, number) == 1) {
+                                intSudoku[prvi][drugi] = number;
                                 Sudoku[prvi][drugi].setText("" + intSudoku[prvi][drugi]);
                                 inputField.setVisible(false);
                                 Sudoku[prvi][drugi].setVisible(true);
                                 ispis();
                                 IsFinished(DifficultyLevel.getDificultyString());
-                            } else {
+                            }else{
                                 inputField.setVisible(false);
                                 Sudoku[prvi][drugi].setVisible(true);
                                 Sudoku[prvi][drugi].setBackground(Color.red);
                             }
-                        } else {
-                            e.consume();
-                            inputField.setText("");
+                        }else{
+                            inputField.setVisible(false);
+                            Sudoku[prvi][drugi].setVisible(true);
+                            Sudoku[prvi][drugi].setBackground(Color.green);
                         }
                     }
-                    else
-                        JOptionPane.showMessageDialog(new JFrame(), "NOT YET SUPPORTED",
-                "Warning", 0);
-//                    else{
-//                        if(e.getKeyChar()<'0' || e.getKeyChar()>'9')
-//                            inputField.setText("NN");
-//                            if (e.getKeyChar() <= '9' && e.getKeyChar() >= '0') {
-//                                if (IsValidNumber(prvi, drugi, e.getKeyChar() - '0') == 1) {
-//                                intSudoku[prvi][drugi] = e.getKeyChar() - '0';
-//                                Sudoku[prvi][drugi].setText("" + intSudoku[prvi][drugi]);
-//                                inputField.setVisible(false);
-//                                Sudoku[prvi][drugi].setVisible(true);
-//                                ispis();
-//                                IsFinished(DifficultyLevel.getDificultyString());
-//                            } else {
-//                                inputField.setVisible(false);
-//                                Sudoku[prvi][drugi].setVisible(true);
-//                                Sudoku[prvi][drugi].setBackground(Color.red);
-//                            }
-//                        } else if(e.getKeyChar() == '1'){
-//                            inputField.setText("1");
-//                            if(e.getKeyChar()<='6' && e.getKeyChar() >='0'){
-//                                inputField.setText("1"+e.getKeyChar());
-//                                if (IsValidNumber(prvi, drugi, Integer.parseInt(inputField.getText())) == 1) {
-//                                    intSudoku[prvi][drugi] = Integer.parseInt(inputField.getText());
-//                                    Sudoku[prvi][drugi].setText("" + intSudoku[prvi][drugi]);
-//                                    inputField.setVisible(false);
-//                                    Sudoku[prvi][drugi].setVisible(true);
-//                                    ispis();
-//                                    IsFinished(DifficultyLevel.getDificultyString());
-//                                }else {
-//                                    inputField.setVisible(false);
-//                                    Sudoku[prvi][drugi].setVisible(true);
-//                                    Sudoku[prvi][drugi].setBackground(Color.red);
-//                                }
-//                            }
-//                            else{
-//                                e.consume();
-//                                inputField.setText("");
-//                            }    
-//                        } else {
-//                            e.consume();
-//                            inputField.setText("");
-//                        }
-//                    }
-                }
+                                }
                 @Override public void keyPressed(KeyEvent e) {}
                 @Override public void keyReleased(KeyEvent e) {}
             };
