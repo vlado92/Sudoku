@@ -26,7 +26,7 @@ public class Menu {
         
         JMenu help = new JMenu("Help");
         
-        JMenu result = new JMenu("Result");
+        JMenu result = new JMenu("High Score");
         JMenu lako = new JMenu("Easy");
         JMenu srednje = new JMenu("Medium");
         JMenu tesko = new JMenu("Hard");
