@@ -26,13 +26,13 @@ public class Buttons extends JPanel implements ActionListener {
     private static JLabel stateOfGame = new JLabel();
     private JTextField inputField;
     private int[][] intSudoku;
-    private boolean finished;
+    private static boolean finished;
     public static String difString;
     static int inputCounter = 0;
     static int number;
     static int maximum;
                       
-    public boolean isFisnished() {
+    public static boolean isFisnished() {
         return finished;
     }
 
@@ -121,7 +121,7 @@ public class Buttons extends JPanel implements ActionListener {
         }
     }
 
-    private int IsValidNumber(int rows, int columns, int number) {
+    private boolean IsValidNumber(int rows, int columns, int number) {
         int[] column = new int[sudokuSize];
         int[] row = new int[sudokuSize];
         int[] cube = new int[sudokuSize];
@@ -163,34 +163,21 @@ public class Buttons extends JPanel implements ActionListener {
             }
         }
         if (rowFlag == 0 && columnFlag == 0 && cubeFlag == 0) {
-            return 1;
+            return true;
         }
-        return 0;
+        return false;
     }
 
-    private void IsFinished(String dificultyString) {
-        int flag = 2;
+    private boolean IsFinished(String dificultyString) {
         for (int i = 0; i < sudokuSize; i++) {
             for (int j = 0; j < sudokuSize; j++) {
                 if (intSudoku[i][j] == 0) {
-                    flag = 1;
-                    break;
-                } else {
-                    flag = 0;
+                    return false;
                 }
             }
         }
-        if (flag == 0) {
-            stateOfGame.setText("Game Over");
-            finished = true;
-            DifficultyLevel.setButtonFinished(finished);
-        } else if (flag == 1) {
-            stateOfGame.setText("Still playing!");
-        } else {
-            stateOfGame.setText("ERROR");
-        }
+        return true;
     }
-
     private void ispis() {
         for (int i = 0; i < sudokuSize; i++) {
             for (int j = 0; j < sudokuSize; j++) {
@@ -296,14 +283,21 @@ public class Buttons extends JPanel implements ActionListener {
                         }else{
                             int broj = Integer.parseInt(inputField.getText());
                             inputCounter = 0;
-                            if(broj>0 && broj < 17){
-                                if (IsValidNumber(prvi, drugi, broj) == 1) {
+                            if(broj>0 && broj <= sudokuSize){
+                                if (IsValidNumber(prvi, drugi, broj)) {
                                     intSudoku[prvi][drugi] = broj;
                                     Sudoku[prvi][drugi].setText("" + intSudoku[prvi][drugi]);
                                     inputField.setVisible(false);
                                     Sudoku[prvi][drugi].setVisible(true);
                                     ispis();
-                                    IsFinished(DifficultyLevel.getDificultyString());
+                                    if(IsFinished(DifficultyLevel.getDificultyString()))
+                                    {
+                                        stateOfGame.setText("Game Over");
+                                        finished = true;
+                                    }else
+                                    {
+                                        stateOfGame.setText("Still playing!");
+                                    }
                                 } else {
                                     inputField.setVisible(false);
                                     Sudoku[prvi][drugi].setVisible(true);
@@ -324,13 +318,20 @@ public class Buttons extends JPanel implements ActionListener {
                     if(inputCounter == maximum){
                         inputCounter = 0;
                         if(number > 0 && number <= sudokuSize){
-                            if (IsValidNumber(prvi, drugi, number) == 1) {
+                            if (IsValidNumber(prvi, drugi, number)) {
                                 intSudoku[prvi][drugi] = number;
                                 Sudoku[prvi][drugi].setText("" + intSudoku[prvi][drugi]);
                                 inputField.setVisible(false);
                                 Sudoku[prvi][drugi].setVisible(true);
                                 ispis();
-                                IsFinished(DifficultyLevel.getDificultyString());
+                                if(IsFinished(DifficultyLevel.getDificultyString()))
+                                    {
+                                        stateOfGame.setText("Game Over");
+                                        finished = true;
+                                    }else
+                                    {
+                                        stateOfGame.setText("Still playing!");
+                                    }
                             }else{
                                 inputField.setVisible(false);
                                 Sudoku[prvi][drugi].setVisible(true);

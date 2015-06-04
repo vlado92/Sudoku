@@ -63,8 +63,9 @@ public class Frame extends JFrame implements ActionListener {
         prenesi = ((minutes >= 10) ? (""+minutes) : ("0"+minutes)) + ":"
                 + ((secondsTemp >= 10) ? (""+secondsTemp) : ("0"+secondsTemp));
         timeLabel.setText(prenesi);
-        if(DifficultyLevel.isButtonFinished() && seconds!=0)
+        if(Buttons.isFisnished()&& seconds!=0)
         {
+            System.out.println("doslo je ovde!");
             HighScore score = new HighScore(Buttons.difString);
             score.setVisible(true);
             score.setLocationRelativeTo(this);

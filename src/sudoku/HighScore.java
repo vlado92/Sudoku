@@ -6,6 +6,7 @@
 package sudoku;
 
 import java.awt.HeadlessException;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.Key;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
@@ -123,6 +125,7 @@ public class HighScore extends JFrame {
             String data;
             while ((data = bin.readLine()) != null) {
                 scoreTracker.add(data);
+                System.out.println(data);
             }
 
             String nesto;
@@ -186,7 +189,7 @@ public class HighScore extends JFrame {
                 for (int j = 0; j < scoreTracker.get(i).length(); j++) {
                     out.write(scoreTracker.get(i).charAt(j));
                 }
-                out.write(10);
+                out.write("\n");
             }
 
         } catch (IOException ex) {

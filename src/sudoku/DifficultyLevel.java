@@ -172,7 +172,6 @@ public class DifficultyLevel extends javax.swing.JFrame {
                 frame.add(button);
                 frame.pack();
                 this.dispose();
-                buttonFinished = button.isFisnished();
                 frame.timer.start();
             }
     }//GEN-LAST:event_EasyActionPerformed
@@ -195,7 +194,6 @@ public class DifficultyLevel extends javax.swing.JFrame {
                 frame.pack();
                 this.dispose();
                 frame.setVisible(true);
-                buttonFinished = button.isFisnished();
                 frame.timer.restart();
                 frame.setSeconds(0);
             }
@@ -218,7 +216,6 @@ public class DifficultyLevel extends javax.swing.JFrame {
                 frame.add(button);
                 frame.pack();
                 this.dispose();
-                buttonFinished = button.isFisnished();
                 frame.timer.start();
             }
     }//GEN-LAST:event_TestActionPerformed
@@ -240,7 +237,6 @@ public class DifficultyLevel extends javax.swing.JFrame {
                 frame.add(button);
                 frame.pack();
                 this.dispose();
-                buttonFinished = button.isFisnished();
                 frame.timer.start();
             }
     }//GEN-LAST:event_HardActionPerformed

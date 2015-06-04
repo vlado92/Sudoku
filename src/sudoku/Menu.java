@@ -94,7 +94,7 @@ public class Menu {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                Help nova = new Help();
+                Help nova = new Help(frame);
                 nova.setVisible(true);
                 nova.setLocationRelativeTo(frame);
             }
@@ -209,7 +209,7 @@ public class Menu {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                HighScore nova = new HighScore("Test");
+                HighScore nova = new HighScore("Test3");
                 nova.setVisible(true);
                 nova.setLocationRelativeTo(frame);
             }
