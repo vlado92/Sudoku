@@ -1,8 +1,11 @@
 package sudoku;
 
+import java.awt.Color;
 import java.awt.HeadlessException;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -11,23 +14,66 @@ import javax.swing.JLabel;
 public class Help extends JFrame {
 
     private JLabel createdBy = new JLabel();
-    private JLabel lastEdit = new JLabel();
-
-    public Help() throws HeadlessException {
+    private JTextArea rulesOfGame = new JTextArea();
+    private JButton redButton = new JButton("");
+    private JLabel redButtonLabel = new JLabel();
+    private int[] red = new int[2];
+    private JButton greenButton = new JButton("");
+    private JLabel greenButtonLabel = new JLabel();
+    private int[] green = new int[2];
+    private JLabel buttonColor = new JLabel();
+    public Help(Frame frame) throws HeadlessException {
         this.setTitle("Help");
-        this.setSize(300, 300);
+        this.setSize(262, 400);
         this.setResizable(false);
+        this.setAlwaysOnTop(true);
+        this.setLocationRelativeTo(frame);
+        createdBy.setText("Created by: Vladimir Kunarac");
+        rulesOfGame.setText("Hello! Enjoy playing this classic number game,\n"+
+                            "adored by many across the globe - SUDOKU!\n\n" +
+                            "The rules are simple. You have to fill\n"+
+                            "the grid with numbers, while every row,\n "+
+                            "column or grid box can have only one of\n "+
+                            "the same numbers.\n\n" +
+                            "To start a game click on File and choose\n"+
+                            "New Game. From the next menu, you can pick\n" +
+                            "the grid dimensions and game difficulty.\n" +
+                            "If you do well enough, your name can find\n"+
+                            "it's place in the Highscores. Just search\n"+
+                            "for the game mode you played in and see \n"+
+                            "who solved the puzzle in the shortest time!");
+        rulesOfGame.setBounds(0, 0, 262, 248);
+        rulesOfGame.setEditable(false);
         
-        String noviRed = "nesto\n drugo";
-        System.out.println(noviRed);
-        createdBy.setText("Napravio: Vladimir Kunarac");
-        lastEdit.setText("Poslednja izmjena: 10.5.2015. 17:33");
-        createdBy.setBounds(0, 0, 200, 20);
-        lastEdit.setBounds(0, 30, 500, 50);
-        createdBy.setVerticalAlignment(JLabel.TOP);
-        lastEdit.setVerticalAlignment(JLabel.TOP);
+        createdBy.setVerticalAlignment(JLabel.BOTTOM);
+        createdBy.setHorizontalAlignment(JLabel.RIGHT);
 
-        add(lastEdit);
+        buttonColor.setBounds(0, 265,300,20);
+        buttonColor.setText("If button is:");
+            
+        red[1] = 283;
+        green[0] = red[0] = 0;
+        redButton.setVisible(true);
+        redButton.setEnabled(false);
+        redButton.setBounds(red[0], red[1], 20,20);
+        redButton.setBackground(Color.red);
+        redButtonLabel.setText("Means you put invalid number!");
+        redButtonLabel.setBounds(red[0]+30, red[1], 300, 20);
+        
+        green[1] = red[1] + 30;
+        greenButton.setBackground(Color.green);
+        greenButton.setVisible(true);
+        greenButton.setEnabled(false);
+        greenButton.setBounds(green[0], green[1], 20,20);
+        greenButtonLabel.setText("Means you put number out of bounds!");
+        greenButtonLabel.setBounds(green[0]+30, green[1], 300, 20);
+        
+        add(rulesOfGame);
+        add(redButton);
+        add(redButtonLabel);
+        add(greenButton);
+        add(greenButtonLabel);
+        add(buttonColor);
         add(createdBy);
     }
 }
