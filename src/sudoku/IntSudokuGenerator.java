@@ -1,5 +1,6 @@
 package sudoku;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class IntSudokuGenerator {
@@ -73,7 +74,7 @@ public class IntSudokuGenerator {
   // next cell => col++
   col++;
 
-  // if col > 8, then col = 0, row++
+  // if col > N-1, then col = 0, row++
   // reached end of row, got to next row
   if (col > Buttons.getSudokuSize()-1) {
    // goto next line
@@ -132,7 +133,7 @@ public class IntSudokuGenerator {
    // continue with other possible values
   }
 
-  // if you reach here, then no value from 1 - 9 for this cell can solve
+  // if you reach here, then no value from 1 - N for this cell can solve
   // return false
   return false;
  }
@@ -141,15 +142,20 @@ public class IntSudokuGenerator {
         Random rand = new Random();
         N = imported.length;
         grid =  new int[N][N];
-        int broj1 = 4;
-        int broj2 = 7;
-        int broj3 = 6;
+        int randomNumber;
+        ArrayList<Integer> availableNumbers = new ArrayList<>();
         for(int i=0; i<N; i++)
+        {
+            availableNumbers.add(i+1);
             for(int j=0; j<N; j++)
                 grid[i][j] = 0;
+        }
         for(int j=0; j<N; j++)
-            grid[0][j]= (broj1 + +(j+broj3)%Buttons.getSqrtOfSudokuSize() +
-                    (j/Buttons.getSqrtOfSudokuSize()+broj2)*Buttons.getSqrtOfSudokuSize())%N+1;
+        {
+            randomNumber = rand.nextInt(availableNumbers.size());
+            grid[0][j]= availableNumbers.get(randomNumber);
+            availableNumbers.remove(randomNumber);
+        }
         boolean solved = solve(new Cell(0, 0));
         if (!solved) {
             System.out.println("SUDOKU cannot be solved.");

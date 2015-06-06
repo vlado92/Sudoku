@@ -17,19 +17,10 @@ public class DifficultyLevel extends javax.swing.JFrame {
     private static String dificultyString;
     private static Frame frame;
     private Buttons button;
-    private static boolean buttonFinished = false;
     private static int sizeOf;
 
     public static int getSizeOf() {
         return sizeOf;
-    }
-    
-    public static boolean isButtonFinished() {
-        return buttonFinished;
-    }
-
-    public static void setButtonFinished(boolean buttonFinished) {
-        DifficultyLevel.buttonFinished = buttonFinished;
     }
     
     public static String getDificultyString() {
@@ -247,7 +238,6 @@ public class DifficultyLevel extends javax.swing.JFrame {
         else if(velicina4.isSelected())
             velicina4.setSelected(false);
         sizeOf = 4;
-        System.out.println(sizeOf);
     }//GEN-LAST:event_velicina2ActionPerformed
 
     private void velicina3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velicina3ActionPerformed
@@ -256,8 +246,6 @@ public class DifficultyLevel extends javax.swing.JFrame {
         else if(velicina4.isSelected())
             velicina4.setSelected(false);
         sizeOf = 9;
-        
-        System.out.println(sizeOf);
     }//GEN-LAST:event_velicina3ActionPerformed
 
     private void velicina4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velicina4ActionPerformed
@@ -266,7 +254,6 @@ public class DifficultyLevel extends javax.swing.JFrame {
         else if(velicina2.isSelected())
             velicina2.setSelected(false);
         sizeOf = 16;
-        System.out.println(sizeOf);
     }//GEN-LAST:event_velicina4ActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
