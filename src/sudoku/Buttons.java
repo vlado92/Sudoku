@@ -23,7 +23,7 @@ public class Buttons extends JPanel implements ActionListener {
     private static int blockSize;
     private JButton[][] Sudoku;
     private Font font;
-    private static JLabel stateOfGame = new JLabel();
+    private static final JLabel stateOfGame = new JLabel();
     private JTextField inputField;
     private int[][] intSudoku;
     private static boolean finished;
@@ -150,33 +150,32 @@ public class Buttons extends JPanel implements ActionListener {
         return false;
     }
     private void placeNumberInSudoku(int firstIndex, int secondIndex, int number) {
-                    inputCounter = 0;
-                    if(number > 0 && number <= sudokuSize){
-                        if (IsValidNumber(firstIndex, secondIndex, number)) {
-                            intSudoku[firstIndex][secondIndex] = number;
-                            Sudoku[firstIndex][secondIndex].setText("" + intSudoku[firstIndex][secondIndex]);
-                            inputField.setVisible(false);
-                            Sudoku[firstIndex][secondIndex].setVisible(true);
-                            if(emptySpaces == 0)
-                            {
-                                stateOfGame.setText("Game Over");
-                                finished = true;
-                            }else
-                            {
-                                stateOfGame.setText("Still playing!");
-                            }
-                        }else{
-                            inputField.setVisible(false);
-                            Sudoku[firstIndex][secondIndex].setVisible(true);
-                            Sudoku[firstIndex][secondIndex].setBackground(Color.red);
-                        }
-                    }else{
-                        inputField.setVisible(false);
-                        Sudoku[firstIndex][secondIndex].setVisible(true);
-                        Sudoku[firstIndex][secondIndex].setBackground(Color.green);
-                    }
+        inputCounter = 0;
+        if(number > 0 && number <= sudokuSize){
+            if (IsValidNumber(firstIndex, secondIndex, number)) {
+                intSudoku[firstIndex][secondIndex] = number;
+                Sudoku[firstIndex][secondIndex].setText("" + intSudoku[firstIndex][secondIndex]);
+                inputField.setVisible(false);
+                Sudoku[firstIndex][secondIndex].setVisible(true);
+                if(emptySpaces == 0)
+                {
+                    stateOfGame.setText("Game Over");
+                    finished = true;
+                }else
+                {
+                    stateOfGame.setText("Still playing!");
                 }
-    
+            }else{
+                inputField.setVisible(false);
+                Sudoku[firstIndex][secondIndex].setVisible(true);
+                Sudoku[firstIndex][secondIndex].setBackground(Color.red);
+            }
+        }else{
+            inputField.setVisible(false);
+            Sudoku[firstIndex][secondIndex].setVisible(true);
+            Sudoku[firstIndex][secondIndex].setBackground(Color.green);
+        }
+    }
     @Override public void paint(Graphics g) {
         super.paint(g);
         for(int i=0; i<blockSize; i++)
@@ -207,9 +206,7 @@ public class Buttons extends JPanel implements ActionListener {
         i = Integer.parseInt(subString.substring(0, subString.indexOf(" ")));
         j = Integer.parseInt(subString.substring(subString.indexOf(" ")+1));
         
-        if (Sudoku[i][j].isEnabled() == false) {
-            System.out.println("nije moguce");
-        } else {
+        if (Sudoku[i][j].isEnabled()) {
             JButton example = new JButton();
             example.setEnabled(true);
             for (int k = 0; k < sudokuSize; k++) {
@@ -224,8 +221,12 @@ public class Buttons extends JPanel implements ActionListener {
             }
             inputField = new JTextField();
             inputField.setBounds(Sudoku[i][j].getBounds());
-            Sudoku[i][j].setText(" ");
-            intSudoku[i][j] = 0;
+            if(intSudoku[i][j]!=0)
+            {
+                emptySpaces++;
+                Sudoku[i][j].setText(" ");
+                intSudoku[i][j] = 0;
+            }
             inputField.setText("");
             inputField.setVisible(true);
             inputField.setEnabled(true);
@@ -267,6 +268,8 @@ public class Buttons extends JPanel implements ActionListener {
                 @Override public void keyReleased(KeyEvent e) {}
             };
             inputField.addKeyListener(keyListener);
+        } else {
+            System.out.println("nije moguce");
         }
     }
 }

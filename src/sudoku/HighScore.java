@@ -6,7 +6,6 @@
 package sudoku;
 
 import java.awt.HeadlessException;
-import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
@@ -14,7 +13,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.Key;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
@@ -60,7 +58,6 @@ public class HighScore extends JFrame {
         readTextFileLineByLine();
         for (int i = 0; i < 10; i++) {
             if (score < time[i]) {
-                System.out.println("uslo u petlju u " + i + " koraku");
                 for (int k = 9; k > i; k--) {
                     playerName[k].setText(playerName[k-1].getText());
                     playerTime[k].setText(playerTime[k-1].getText());
@@ -119,15 +116,12 @@ public class HighScore extends JFrame {
 
             File file = new File(".\\files\\rezultati" + dificultyString + ".txt");
             scoreTracker.clear();
-            System.out.println(file.toPath().toString());
             in = new FileReader(file);
             bin = new BufferedReader(in);
             String data;
             while ((data = bin.readLine()) != null) {
                 scoreTracker.add(data);
-                System.out.println(data);
             }
-
             String nesto;
             int oznakaSubstringa;
             String milis;
@@ -176,7 +170,6 @@ public class HighScore extends JFrame {
             }
         }
     }
-
     public static void writeTextFileLineByLine(String duzina, int unos) {
         FileWriter out = null;
 

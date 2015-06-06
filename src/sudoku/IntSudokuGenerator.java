@@ -161,7 +161,7 @@ public class IntSudokuGenerator {
             System.out.println("SUDOKU cannot be solved.");
             return;
         }
-    System.out.println(" SOLUTION\n");
+    System.out.print("\tSOLUTION");
     printGrid(grid);
     for (int i = 0; i < N; i++) 
         for (int j = 0; j < N; j++)
@@ -169,18 +169,19 @@ public class IntSudokuGenerator {
  }
 
  // utility to print the grid
- static void printGrid(int grid[][]) {
-     
-  for (int row = 0; row < N; row++) {
-        if(row%Buttons.getSqrtOfSudokuSize()==0)
+    static void printGrid(int grid[][]) {
+        for (int row = 0; row < N; row++){
+            if(row%Buttons.getSqrtOfSudokuSize()==0)
+                System.out.println();
+            for (int col = 0; col < N; col++)
+            {
+                if(col%Buttons.getSqrtOfSudokuSize()==0 && col!=0)
+                    System.out.print("\t");
+                if(grid[row][col] < 10 && N>=10)
+                    System.out.print(" ");
+                System.out.print(grid[row][col]+" ");
+            }
             System.out.println();
-    for (int col = 0; col < N; col++)
-    {
-       if(col%Buttons.getSqrtOfSudokuSize()==0)
-           System.out.print("\t");
-       System.out.print(grid[row][col]+" ");
-   }
-   System.out.println();
-  }
- }
+        }
+    }
 }
