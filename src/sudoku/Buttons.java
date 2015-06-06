@@ -27,7 +27,6 @@ public class Buttons extends JPanel implements ActionListener {
     private JTextField inputField;
     private int[][] intSudoku;
     private static boolean finished;
-    public static String difString;
     static int inputCounter = 0;
     static int number;
     static int numberCount;
@@ -49,12 +48,11 @@ public class Buttons extends JPanel implements ActionListener {
         return blockSize;
     }
 
-    public Buttons(String tezinaString, int tezinaInt) {
+    public Buttons(int numbersToDelete) {
         makingSudoku();
-        difString = tezinaString;
         finished = false;
         generateButtons();
-        deletingNumbersInSudoku(tezinaInt);
+        deletingNumbersInSudoku(numbersToDelete);
     }
 
     private void makingSudoku() {
@@ -89,39 +87,19 @@ public class Buttons extends JPanel implements ActionListener {
         }
     }
     private void deletingNumbersInSudoku(int deleteCounter) {
-        int[][] deletedNumbers = new int[deleteCounter][2];
-        int flag, i = 0;
         emptySpaces = deleteCounter;
-        for (; deleteCounter > 0;) {
-            flag = 2;
-            index1 = randomNumber.nextInt(sudokuSize);
-            index2 = randomNumber.nextInt(sudokuSize);
-            deletedNumbers[i][0] = index1;
-            deletedNumbers[i][1] = index2;
-            if (i >= 1) {
-                for (int k = 0; k <= i; k++) {
-                    if (deletedNumbers[k][0] != deletedNumbers[i][0] && deletedNumbers[k][1] != deletedNumbers[i][1]) {
-                        flag = 1;
-                        break;
-                    } else {
-                        flag = 0;
-                    }
-                }
-            } else {
-                flag = 1;
-            }
-            if (flag == 1) {
-                if (intSudoku[index1][index2] != 0) {
-                    Sudoku[index1][index2].setEnabled(true);
-                    Sudoku[index1][index2].setText(" ");
-                    intSudoku[index1][index2] = 0;
-                    deleteCounter--;
-                    i++;
-                }
-            } else if (flag == 2) {
-                System.out.println("ERROR int deleting");
-            } else {
-                System.out.println("ERROR: mistake in deletation");
+        int randomIndex1;
+        int randomIndex2;
+        while(deleteCounter > 0){
+            randomIndex1 = randomNumber.nextInt(sudokuSize);
+            randomIndex2 = randomNumber.nextInt(sudokuSize);
+            if(intSudoku[randomIndex1][randomIndex2] != 0)
+            {
+                intSudoku[randomIndex1][randomIndex2] = 0;
+                Sudoku[randomIndex1][randomIndex2].setEnabled(true);
+                Sudoku[randomIndex1][randomIndex2].setText(" ");
+                intSudoku[randomIndex1][randomIndex2] = 0;
+                deleteCounter--;
             }
         }
     }
