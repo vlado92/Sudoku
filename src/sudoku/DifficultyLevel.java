@@ -21,12 +21,10 @@ public class DifficultyLevel extends javax.swing.JFrame {
 
     public static int getSizeOf() {
         return sizeOf;
-    }
-    
+    }    
     public static String getDificultyString() {
         return dificultyString;
     }
-
     public DifficultyLevel(final Frame neki) {
         this.setAlwaysOnTop(true);
         frame = neki;
@@ -158,7 +156,8 @@ public class DifficultyLevel extends javax.swing.JFrame {
                 frame.dispose();
                 frame = new Frame();
                 frame.setVisible(true);
-                button = new Buttons("Lako"+((int) Math.sqrt(getSizeOf())), (int) ((sizeOf*sizeOf)/2));
+                button = new Buttons((int) ((sizeOf*sizeOf)/2));
+                dificultyString = "Lako"+ ((int)Math.sqrt(sizeOf));
                 button.setVisible(true);
                 frame.add(button);
                 frame.pack();
@@ -179,7 +178,8 @@ public class DifficultyLevel extends javax.swing.JFrame {
                 frame.dispose();
                 frame = new Frame();
                 frame.setVisible(true);
-                button = new Buttons("Srednje"+((int) Math.sqrt(getSizeOf())),(int) (sizeOf*sizeOf)*2/3);
+                button = new Buttons((int) (sizeOf*sizeOf)*2/3);
+                dificultyString = "Srednje"+ ((int)Math.sqrt(sizeOf));
                 button.setVisible(true);
                 frame.add(button);
                 frame.pack();
@@ -202,7 +202,8 @@ public class DifficultyLevel extends javax.swing.JFrame {
                 frame.dispose();
                 frame = new Frame();
                 frame.setVisible(true);
-                button = new Buttons("Test"+((int) Math.sqrt(getSizeOf())), 0);
+                button = new Buttons(1);
+                dificultyString = "Test"+ ((int)Math.sqrt(sizeOf));
                 button.setVisible(true);
                 frame.add(button);
                 frame.pack();
@@ -223,7 +224,8 @@ public class DifficultyLevel extends javax.swing.JFrame {
                 frame.dispose();
                 frame = new Frame();
                 frame.setVisible(true);
-                button = new Buttons("Tesko"+((int) Math.sqrt(getSizeOf())),(int) (sizeOf*sizeOf)*3/4);
+                button = new Buttons((int) (sizeOf*sizeOf)*3/4);
+                dificultyString = "Tesko"+ ((int)Math.sqrt(sizeOf));
                 button.setVisible(true);
                 frame.add(button);
                 frame.pack();
