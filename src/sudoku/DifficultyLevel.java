@@ -153,16 +153,22 @@ public class DifficultyLevel extends javax.swing.JFrame {
             }
             else
             {
-                frame.dispose();
-                frame = new Frame();
-                frame.setVisible(true);
-                button = new Buttons((int) ((sizeOf*sizeOf)/2));
-                dificultyString = "Lako"+ ((int)Math.sqrt(sizeOf));
-                button.setVisible(true);
-                frame.add(button);
-                frame.pack();
-                this.dispose();
-                frame.timer.start();
+                int again = JOptionPane.showConfirmDialog(null, "Are you sure?",
+                                                    "Question?", JOptionPane.YES_NO_OPTION,
+                                                    JOptionPane.QUESTION_MESSAGE);
+                if(again == JOptionPane.YES_OPTION)
+                {
+                    frame.dispose();
+                    frame = new Frame();
+                    frame.setVisible(true);
+                    button = new Buttons((int) ((sizeOf*sizeOf)/2));
+                    dificultyString = "Lako"+ ((int)Math.sqrt(sizeOf));
+                    button.setVisible(true);
+                    frame.add(button);
+                    frame.pack();
+                    this.dispose();
+                    frame.timer.start();
+                }
             }
     }//GEN-LAST:event_EasyActionPerformed
 
@@ -175,18 +181,23 @@ public class DifficultyLevel extends javax.swing.JFrame {
             }
             else
             {
-                frame.dispose();
-                frame = new Frame();
-                frame.setVisible(true);
-                button = new Buttons((int) (sizeOf*sizeOf)*2/3);
-                dificultyString = "Srednje"+ ((int)Math.sqrt(sizeOf));
-                button.setVisible(true);
-                frame.add(button);
-                frame.pack();
-                this.dispose();
-                frame.setVisible(true);
-                frame.timer.restart();
-                frame.setSeconds(0);
+                int again = JOptionPane.showConfirmDialog(null, "Are you sure?", 
+                                                    "Question?", JOptionPane.YES_NO_OPTION,
+                                                    JOptionPane.QUESTION_MESSAGE);
+                if(again == JOptionPane.YES_OPTION)
+                {
+                    frame.dispose();
+                    frame = new Frame();
+                    frame.setVisible(true);
+                    button = new Buttons((int) (sizeOf*sizeOf)*2/3);
+                    dificultyString = "Srednje"+ ((int)Math.sqrt(sizeOf));
+                    button.setVisible(true);
+                    frame.add(button);
+                    frame.pack();
+                    this.dispose();
+                    frame.setVisible(true);
+                    frame.timer.restart();
+                }
             }
     }//GEN-LAST:event_MediumActionPerformed
 
@@ -199,10 +210,30 @@ public class DifficultyLevel extends javax.swing.JFrame {
             }
             else
             {
+                String delete;
+                boolean flag = false;
+                do
+                {
+                    delete = JOptionPane.showInputDialog("How much fields to delete?");
+                    for(int i = 0; i < delete.length(); i++)
+                        if(delete.charAt(i) <= '0' || delete.charAt(i) >= '9')
+                        {
+                            flag = false;
+                            break;
+                        }else
+                            flag = true;
+                    if(flag 
+                        && !(Integer.parseInt(delete) >= 0 
+                        && Integer.parseInt(delete) <= sizeOf*sizeOf))
+                                flag = false;
+                    if(!flag)
+                        JOptionPane.showMessageDialog(null, 
+                            "Please insert number between 0 and " + (sizeOf*sizeOf));
+                }while(!flag);
                 frame.dispose();
                 frame = new Frame();
                 frame.setVisible(true);
-                button = new Buttons(1);
+                button = new Buttons(Integer.parseInt(delete));
                 dificultyString = "Test"+ ((int)Math.sqrt(sizeOf));
                 button.setVisible(true);
                 frame.add(button);
@@ -221,16 +252,22 @@ public class DifficultyLevel extends javax.swing.JFrame {
             }
             else
             {
-                frame.dispose();
-                frame = new Frame();
-                frame.setVisible(true);
-                button = new Buttons((int) (sizeOf*sizeOf)*3/4);
-                dificultyString = "Tesko"+ ((int)Math.sqrt(sizeOf));
-                button.setVisible(true);
-                frame.add(button);
-                frame.pack();
-                this.dispose();
-                frame.timer.start();
+                int again = JOptionPane.showConfirmDialog(null, "Are you sure?",
+                                                    "Question?", JOptionPane.YES_NO_OPTION,
+                                                    JOptionPane.QUESTION_MESSAGE);
+                if(again == JOptionPane.YES_OPTION)
+                {
+                    frame.dispose();
+                    frame = new Frame();
+                    frame.setVisible(true);
+                    button = new Buttons((int) (sizeOf*sizeOf)*3/4);
+                    dificultyString = "Tesko"+ ((int)Math.sqrt(sizeOf));
+                    button.setVisible(true);
+                    frame.add(button);
+                    frame.pack();
+                    this.dispose();
+                    frame.timer.start();
+                }
             }
     }//GEN-LAST:event_HardActionPerformed
 

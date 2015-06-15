@@ -87,8 +87,13 @@ public class Menu {
         exit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
+             int again;
+                again = javax.swing.JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?",
+                                            "Question?", javax.swing.JOptionPane.YES_NO_OPTION, 
+                                            javax.swing.JOptionPane.WARNING_MESSAGE);
+                if(again == javax.swing.JOptionPane.YES_OPTION)
+                    System.exit(0);
+            }        
         });
         help.addMouseListener(new MouseListener() {
 
