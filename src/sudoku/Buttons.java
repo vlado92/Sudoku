@@ -31,6 +31,7 @@ public class Buttons extends JPanel implements ActionListener {
     static int number;
     static int numberCount;
     static int emptySpaces;
+    int tempNumber;
                       
     public static boolean isFisnished() {
         return finished;
@@ -150,7 +151,7 @@ public class Buttons extends JPanel implements ActionListener {
         return false;
     }
     private void placeNumberInSudoku(int firstIndex, int secondIndex, int number) {
-        inputCounter = 0;
+        inputCounter = 0;    
         if(number > 0 && number <= sudokuSize){
             if (IsValidNumber(firstIndex, secondIndex, number)) {
                 intSudoku[firstIndex][secondIndex] = number;
@@ -216,6 +217,13 @@ public class Buttons extends JPanel implements ActionListener {
                         Sudoku[k][l].setVisible(true);
                         inputField.setVisible(false);
                         inputField = null;
+                        if(tempNumber != 0)
+                        {
+                            intSudoku[k][l] = tempNumber;
+                            Sudoku[k][l].setText("" + tempNumber);
+                            emptySpaces--;
+                            tempNumber = 0;
+                        }
                     }
                 }
             }
@@ -223,6 +231,7 @@ public class Buttons extends JPanel implements ActionListener {
             inputField.setBounds(Sudoku[i][j].getBounds());
             if(intSudoku[i][j]!=0)
             {
+                tempNumber = intSudoku[i][j];
                 emptySpaces++;
                 Sudoku[i][j].setText(" ");
                 intSudoku[i][j] = 0;
@@ -256,6 +265,12 @@ public class Buttons extends JPanel implements ActionListener {
                             number = Integer.parseInt(inputField.getText());
                             placeNumberInSudoku(firstIndex, secondIndex, number);
                         }
+                    }else if(e.getKeyChar() == KeyEvent.VK_BACK_SPACE){
+                        intSudoku[firstIndex][secondIndex] = 0;
+                        Sudoku[firstIndex][secondIndex].setText(" ");
+                        Sudoku[firstIndex][secondIndex].setVisible(true);
+                        inputField.setVisible(false);
+                        
                     }else{
                         e.consume();
                     }
