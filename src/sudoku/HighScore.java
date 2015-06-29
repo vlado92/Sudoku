@@ -64,6 +64,7 @@ public class HighScore extends JFrame {
                     scoreTracker.set(k, scoreTracker.get(k-1));
                 }
                 playerTime[i].setText(convertTimeFromIntToString(score));
+                playerTime[i].setVisible(true);
                 final JTextField nameInput = new JTextField();
                 nameInput.setBounds(40, i * 20, 160,  (i+1)* 20);
                 nameInput.setVisible(true);
@@ -95,7 +96,6 @@ public class HighScore extends JFrame {
                     @Override public void keyPressed(KeyEvent e) {}
                     @Override public void keyReleased(KeyEvent e) {}
                 });
-
                 break;
             }
         }

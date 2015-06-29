@@ -31,6 +31,8 @@ public class DifficultyLevel extends javax.swing.JFrame {
         frame.setEnabled(false);
         neki.setFocusable(false);
         initComponents();
+        velicina3.setSelected(true);
+        sizeOf = 9;
     }
 
     @SuppressWarnings("unchecked")
@@ -143,132 +145,108 @@ public class DifficultyLevel extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EasyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EasyActionPerformed
-            if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected()))
-            {
-                this.toBack();
-                JOptionPane.showMessageDialog(new JFrame(), "Select sudoku size",
-                "Warning", 0);
-                frame.setEnabled(false);
-                this.toFront();
-            }
-            else
-            {
-                int again = JOptionPane.showConfirmDialog(null, "Are you sure?",
-                                                    "Question?", JOptionPane.YES_NO_OPTION,
-                                                    JOptionPane.QUESTION_MESSAGE);
-                if(again == JOptionPane.YES_OPTION)
-                {
-                    frame.dispose();
-                    frame = new Frame();
-                    frame.setVisible(true);
-                    button = new Buttons((int) ((sizeOf*sizeOf)/2));
-                    dificultyString = "Lako"+ ((int)Math.sqrt(sizeOf));
-                    button.setVisible(true);
-                    frame.add(button);
-                    frame.pack();
-                    this.dispose();
-                    frame.timer.start();
-                }
-            }
+        if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected()))
+        {
+            this.toBack();
+            JOptionPane.showMessageDialog(new JFrame(), "Select sudoku size",
+            "Warning", 0);
+            frame.setEnabled(false);
+            this.toFront();
+        }
+        else
+        {
+            frame.dispose();
+            frame = new Frame();
+            frame.setVisible(true);
+            button = new Buttons((int) ((sizeOf*sizeOf)/2));
+            dificultyString = "Lako"+ ((int)Math.sqrt(sizeOf));
+            button.setVisible(true);
+            frame.add(button);
+            frame.pack();
+            this.dispose();
+            frame.timer.start();
+        }
     }//GEN-LAST:event_EasyActionPerformed
 
     private void MediumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MediumActionPerformed
-        if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected()))
-            {
+        if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected())){
                 this.toBack();
                 JOptionPane.showMessageDialog(new JFrame(), "Select sudoku size",
                 "Warning", 0);
-            }
-            else
-            {
-                int again = JOptionPane.showConfirmDialog(null, "Are you sure?", 
-                                                    "Question?", JOptionPane.YES_NO_OPTION,
-                                                    JOptionPane.QUESTION_MESSAGE);
-                if(again == JOptionPane.YES_OPTION)
-                {
-                    frame.dispose();
-                    frame = new Frame();
-                    frame.setVisible(true);
-                    button = new Buttons((int) (sizeOf*sizeOf)*2/3);
-                    dificultyString = "Srednje"+ ((int)Math.sqrt(sizeOf));
-                    button.setVisible(true);
-                    frame.add(button);
-                    frame.pack();
-                    this.dispose();
-                    frame.setVisible(true);
-                    frame.timer.restart();
-                }
-            }
+        }
+        else
+        {
+            frame.dispose();
+            frame = new Frame();
+            frame.setVisible(true);
+            button = new Buttons((int) (sizeOf*sizeOf)*2/3);
+            dificultyString = "Srednje"+ ((int)Math.sqrt(sizeOf));
+            button.setVisible(true);
+            frame.add(button);
+            frame.pack();
+            this.dispose();
+            frame.setVisible(true);
+            frame.timer.restart();
+        }
     }//GEN-LAST:event_MediumActionPerformed
 
     private void TestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TestActionPerformed
-        if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected()))
+        if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected())){
+            this.toBack();
+            JOptionPane.showMessageDialog(new JFrame(), "Select sudoku size",
+            "Warning", 0);
+        }
+        else{
+            String delete;
+            boolean flag = false;
+            do
             {
-                this.toBack();
-                JOptionPane.showMessageDialog(new JFrame(), "Select sudoku size",
-                "Warning", 0);
-            }
-            else
-            {
-                String delete;
-                boolean flag = false;
-                do
-                {
-                    delete = JOptionPane.showInputDialog("How much fields to delete?");
-                    for(int i = 0; i < delete.length(); i++)
-                        if(delete.charAt(i) <= '0' || delete.charAt(i) >= '9')
-                        {
+                delete = JOptionPane.showInputDialog("How much fields to delete?");
+                for(int i = 0; i < delete.length(); i++)
+                    if(delete.charAt(i) <= '0' || delete.charAt(i) >= '9')
+                    {
+                        flag = false;
+                        break;
+                    }else
+                        flag = true;
+                if(flag 
+                    && !(Integer.parseInt(delete) >= 0 
+                    && Integer.parseInt(delete) <= sizeOf*sizeOf))
                             flag = false;
-                            break;
-                        }else
-                            flag = true;
-                    if(flag 
-                        && !(Integer.parseInt(delete) >= 0 
-                        && Integer.parseInt(delete) <= sizeOf*sizeOf))
-                                flag = false;
-                    if(!flag)
-                        JOptionPane.showMessageDialog(null, 
-                            "Please insert number between 0 and " + (sizeOf*sizeOf));
-                }while(!flag);
-                frame.dispose();
-                frame = new Frame();
-                frame.setVisible(true);
-                button = new Buttons(Integer.parseInt(delete));
-                dificultyString = "Test"+ ((int)Math.sqrt(sizeOf));
-                button.setVisible(true);
-                frame.add(button);
-                frame.pack();
-                this.dispose();
-                frame.timer.start();
-            }
+                if(!flag)
+                    JOptionPane.showMessageDialog(null, 
+                        "Please insert number between 0 and " + (sizeOf*sizeOf));
+            }while(!flag);
+            frame.dispose();
+            frame = new Frame();
+            frame.setVisible(true);
+            button = new Buttons(Integer.parseInt(delete));
+            dificultyString = "Test"+ ((int)Math.sqrt(sizeOf));
+            button.setVisible(true);
+            frame.add(button);
+            frame.pack();
+            this.dispose();
+            frame.timer.start();
+        }
     }//GEN-LAST:event_TestActionPerformed
 
     private void HardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HardActionPerformed
-        if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected()))
-            {
-                this.toBack();
-                JOptionPane.showMessageDialog(new JFrame(), "Select sudoku size",
-                "Warning", 0);
-            }
-            else
-            {
-                int again = JOptionPane.showConfirmDialog(null, "Are you sure?",
-                                                    "Question?", JOptionPane.YES_NO_OPTION,
-                                                    JOptionPane.QUESTION_MESSAGE);
-                if(again == JOptionPane.YES_OPTION)
-                {
-                    frame.dispose();
-                    frame = new Frame();
-                    frame.setVisible(true);
-                    button = new Buttons((int) (sizeOf*sizeOf)*3/4);
-                    dificultyString = "Tesko"+ ((int)Math.sqrt(sizeOf));
-                    button.setVisible(true);
-                    frame.add(button);
-                    frame.pack();
-                    this.dispose();
-                    frame.timer.start();
-                }
-            }
+        if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected())){
+            this.toBack();
+            JOptionPane.showMessageDialog(new JFrame(), "Select sudoku size",
+            "Warning", 0);
+        }else{
+            frame.dispose();
+            frame = new Frame();
+            frame.setVisible(true);
+            button = new Buttons((int) (sizeOf*sizeOf)*3/4);
+            dificultyString = "Tesko"+ ((int)Math.sqrt(sizeOf));
+            button.setVisible(true);
+            frame.add(button);
+            frame.pack();
+            this.dispose();
+            frame.timer.start();
+        }
     }//GEN-LAST:event_HardActionPerformed
 
     private void velicina2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_velicina2ActionPerformed

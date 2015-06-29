@@ -58,7 +58,7 @@ public class Help extends JFrame {
         redButton.setEnabled(false);
         redButton.setBounds(red[0], red[1], 20,20);
         redButton.setBackground(Color.red);
-        redButtonLabel.setText("Means you put invalid number!");
+        redButtonLabel.setText(" - you inserted invalid number!");
         redButtonLabel.setBounds(red[0]+30, red[1], 300, 20);
         
         green[1] = red[1] + 30;
@@ -66,7 +66,7 @@ public class Help extends JFrame {
         greenButton.setVisible(true);
         greenButton.setEnabled(false);
         greenButton.setBounds(green[0], green[1], 20,20);
-        greenButtonLabel.setText("Means you put number out of bounds!");
+        greenButtonLabel.setText("you inserted number out of bounds!");
         greenButtonLabel.setBounds(green[0]+30, green[1], 300, 20);
         
         add(rulesOfGame);
