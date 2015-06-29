@@ -40,7 +40,7 @@ public class DifficultyLevel extends javax.swing.JFrame {
     private void initComponents() {
 
         Easy = new javax.swing.JButton();
-        Test = new javax.swing.JButton();
+        Custom = new javax.swing.JButton();
         Medium = new javax.swing.JButton();
         Hard = new javax.swing.JButton();
         velicina2 = new javax.swing.JCheckBox();
@@ -62,10 +62,10 @@ public class DifficultyLevel extends javax.swing.JFrame {
             }
         });
 
-        Test.setText("Test");
-        Test.addActionListener(new java.awt.event.ActionListener() {
+        Custom.setText("Custom");
+        Custom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TestActionPerformed(evt);
+                CustomActionPerformed(evt);
             }
         });
 
@@ -115,7 +115,7 @@ public class DifficultyLevel extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Medium, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Test, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(Custom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(velicina2)
@@ -136,7 +136,7 @@ public class DifficultyLevel extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(Test, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Custom, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(Hard, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(velicina4)))
         );
@@ -190,7 +190,7 @@ public class DifficultyLevel extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_MediumActionPerformed
 
-    private void TestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TestActionPerformed
+    private void CustomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomActionPerformed
         if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected())){
             this.toBack();
             JOptionPane.showMessageDialog(new JFrame(), "Select sudoku size",
@@ -233,7 +233,7 @@ public class DifficultyLevel extends javax.swing.JFrame {
                 frame.timer.start();
             }
         }
-    }//GEN-LAST:event_TestActionPerformed
+    }//GEN-LAST:event_CustomActionPerformed
 
     private void HardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HardActionPerformed
         if(!(velicina2.isSelected()||velicina3.isSelected()||velicina4.isSelected())){
@@ -284,10 +284,10 @@ public class DifficultyLevel extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Custom;
     private javax.swing.JButton Easy;
     private javax.swing.JButton Hard;
     private javax.swing.JButton Medium;
-    private javax.swing.JButton Test;
     private javax.swing.JCheckBox velicina2;
     private javax.swing.JCheckBox velicina3;
     private javax.swing.JCheckBox velicina4;

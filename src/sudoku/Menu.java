@@ -30,7 +30,7 @@ public class Menu {
         JMenu lako = new JMenu("Easy");
         JMenu srednje = new JMenu("Medium");
         JMenu tesko = new JMenu("Hard");
-        JMenu test = new JMenu("Test");
+        JMenu test = new JMenu("Custom");
 
         JMenuItem lako2 = new JMenuItem("4x4");
         JMenuItem lako3 = new JMenuItem("9x9");
